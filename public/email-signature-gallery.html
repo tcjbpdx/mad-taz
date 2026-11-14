@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Signature — Taz Brown</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #111827; font-family: Arial, Helvetica, sans-serif; padding: 40px 32px; min-height: 100vh; }
+    h1 { color: #ffffff; font-size: 20px; font-weight: 700; margin-bottom: 6px; letter-spacing: .02em; }
+    .sub { color: #6b7280; font-size: 13px; margin-bottom: 36px; }
+    .back { display: inline-flex; align-items: center; gap: 6px; color: #4f8ef7; font-size: 13px; text-decoration: none; margin-bottom: 28px; transition: color .15s; }
+    .back:hover { color: #7aaff9; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; max-width: 1200px; }
+    .card-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .label-row { display: flex; align-items: center; justify-content: flex-start; gap: 10px; }
+    .num { background: #1e2a3a; color: #4f8ef7; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+    .preview { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.5); display: block; cursor: pointer; transition: transform .15s, box-shadow .15s; background: #ffffff; }
+    .preview:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(79,142,247,.25); }
+    .preview img { width: 100%; display: block; }
+    .btn-row { display: flex; gap: 10px; }
+    .dl-btn { flex: 1; display: block; text-align: center; background: #1e2a3a; color: #4f8ef7; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 9px; border-radius: 6px; text-decoration: none; border: 1px solid #2d3f55; transition: background .15s; }
+    .dl-btn:hover { background: #4f8ef7; color: #ffffff; border-color: #4f8ef7; }
+    .view-btn { flex: 1; display: block; text-align: center; background: transparent; color: #6b7280; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 9px; border-radius: 6px; text-decoration: none; border: 1px solid #2d3f55; transition: background .15s, color .15s; }
+    .view-btn:hover { background: #1e2a3a; color: #9ca3af; }
+    .copy-btn { flex: 1; display: block; text-align: center; background: #0d3a1f; color: #34d399; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 9px; border-radius: 6px; border: 1px solid #166534; cursor: pointer; transition: background .15s, color .15s; font-family: inherit; }
+    .copy-btn:hover { background: #166534; color: #6ee7b7; }
+    .copy-btn.copied { background: #166534; color: #6ee7b7; }
+  </style>
+</head>
+<body>
+  <a class="back" href="/">&#8592; Back</a>
+  <h1>Email Signature</h1>
+  <p class="sub">Copy-paste ready &nbsp;·&nbsp; Gmail / Outlook compatible &nbsp;·&nbsp; Click to view full size</p>
+
+  <div class="grid">
+
+    <div class="card-wrap">
+      <div class="label-row">
+        <span class="num">01</span>
+      </div>
+      <div class="preview" style="padding:0;overflow:hidden;">
+        <iframe src="email-signature-1.html" scrolling="no" style="width:100%;border:none;display:block;pointer-events:none;" onload="this.style.height=this.contentDocument.body.scrollHeight+'px'"></iframe>
+      </div>
+      <div class="btn-row">
+        <a class="view-btn" href="email-signature-1.html" target="_blank">View HTML</a>
+        <button class="view-btn" style="cursor:pointer;font-family:inherit;" onclick="copySignature(this, 'email-signature-1.html')">Copy HTML</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    async function copySignature(btn, file) {
+      try {
+        const html = await fetch(file).then(r => r.text());
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        // Replace inline SVG logo with hosted image for Gmail compatibility
+        const svg = doc.querySelector('svg#dd-logo');
+        if (svg) {
+          const img = doc.createElement('img');
+          img.src = 'https://madtaz.com/dolly-doc-logo.png';
+          img.width = 72; img.height = 54;
+          img.alt = 'Dolly Doc';
+          img.style.cssText = 'display:block;margin:0 auto;';
+          svg.replaceWith(img);
+        }
+        const table = doc.querySelector('table').outerHTML;
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'text/html': new Blob([table], { type: 'text/html' }) })
+        ]);
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy HTML'; }, 2000);
+      } catch (e) {
+        btn.textContent = 'Failed';
+        setTimeout(() => { btn.textContent = 'Copy HTML'; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dolly Doc — Brand Assets</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #111827; font-family: Arial, Helvetica, sans-serif; padding: 40px 32px; min-height: 100vh; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-bottom: 36px;
+      color: #6b7280; text-decoration: none; font-size: 13px; font-weight: 600;
+      transition: color .15s;
+    }
+    .back-btn:hover { color: #ffffff; }
+
+    .page-title { color: #ffffff; font-size: 24px; font-weight: 700; margin-bottom: 6px; letter-spacing: .02em; }
+    .page-sub { color: #6b7280; font-size: 13px; margin-bottom: 56px; }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: #4f8ef7; margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 18px; font-weight: 700; color: #ffffff;
+      letter-spacing: -.01em; margin-bottom: 24px;
+    }
+    .section { margin-bottom: 60px; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 1200px; }
+    .grid-1 { display: grid; grid-template-columns: 1fr; gap: 28px; max-width: 600px; }
+
+    .card-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .label-row { display: flex; align-items: center; gap: 10px; }
+    .num { background: #1e2a3a; color: #4f8ef7; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+
+    .preview { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.5); display: block; cursor: pointer; transition: transform .15s, box-shadow .15s; background: #ffffff; }
+    .preview:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(79,142,247,.25); }
+    .preview img { width: 100%; display: block; }
+    .preview iframe { width: 100%; border: none; display: block; pointer-events: none; }
+
+    .btn-row { display: flex; gap: 10px; }
+    .dl-btn { flex: 1; display: block; text-align: center; background: #1e2a3a; color: #4f8ef7; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 9px; border-radius: 6px; text-decoration: none; border: 1px solid #2d3f55; transition: background .15s; }
+    .dl-btn:hover { background: #4f8ef7; color: #ffffff; border-color: #4f8ef7; }
+    .view-btn { flex: 1; display: block; text-align: center; background: transparent; color: #6b7280; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 9px; border-radius: 6px; text-decoration: none; border: 1px solid #2d3f55; transition: background .15s, color .15s; }
+    .view-btn:hover { background: #1e2a3a; color: #9ca3af; }
+    .copy-btn { flex: 1; display: block; text-align: center; background: #0d3a1f; color: #34d399; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 9px; border-radius: 6px; border: 1px solid #166534; cursor: pointer; transition: background .15s, color .15s; font-family: inherit; }
+    .copy-btn:hover { background: #166534; color: #6ee7b7; }
+    .copy-btn.copied { background: #166534; color: #6ee7b7; }
+
+    .divider { height: 1px; background: #1c2030; max-width: 1200px; margin-bottom: 56px; }
+  </style>
+</head>
+<body>
+
+  <a class="back-btn" href="/#projects">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </a>
+
+  <h1 class="page-title">Dolly Doc — Brand Assets</h1>
+  <p class="page-sub">Business cards, email signatures, and brand materials</p>
+
+  <!-- BUSINESS CARDS -->
+  <div class="section">
+    <div class="section-label">Print</div>
+    <div class="section-title">Business Cards</div>
+    <p style="color:#6b7280;font-size:13px;margin-bottom:24px;">1050 × 600 px &nbsp;·&nbsp; 300 DPI &nbsp;·&nbsp; Click any card to view full size</p>
+    <div class="grid-2">
+
+      <div class="card-wrap">
+        <div class="label-row"><span class="num">01</span></div>
+        <a class="preview" href="business-card-1.png" target="_blank">
+          <img src="business-card-1.png" alt="Business Card — Dark Split">
+        </a>
+        <a class="dl-btn" href="business-card-1.png" download="dolly-doc-card-dark-split.png">↓ Download</a>
+      </div>
+
+      <div class="card-wrap">
+        <div class="label-row"><span class="num">02</span></div>
+        <a class="preview" href="business-card-2.png" target="_blank">
+          <img src="business-card-2.png" alt="Business Card — Full Dark">
+        </a>
+        <a class="dl-btn" href="business-card-2.png" download="dolly-doc-card-full-dark.png">↓ Download</a>
+      </div>
+
+    </div>
+  </div>
+
+
+</body>
+</html>

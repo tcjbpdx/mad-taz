@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MadTaz — Accreditation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0c10;
+      --surface: #111418;
+      --border:  #1c2030;
+      --text:    #e2e4e9;
+      --muted:   #5a6070;
+      --accent:  #4f8ef7;
+      --gold:    #c9a44a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── SUBNAV ─────────────────────────────── */
+    .subnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 44px;
+      display: flex; align-items: center;
+      padding: 0 48px;
+      gap: 6px;
+    }
+    .subnav-btn {
+      display: inline-flex; align-items: center;
+      padding: 5px 16px;
+      border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .subnav-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+    .subnav-btn.active {
+      color: var(--accent);
+      background: rgba(79,142,247,.08);
+      border-color: rgba(79,142,247,.3);
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .page-header {
+      max-width: 860px; margin: 0 auto;
+      padding: 120px 48px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(201,164,74,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+      position: relative;
+    }
+    .page-title {
+      font-size: 42px; font-weight: 800; color: #ffffff;
+      letter-spacing: -.02em; margin-bottom: 16px;
+      position: relative;
+    }
+    .page-intro {
+      font-size: 16px; color: var(--muted); line-height: 1.7;
+      max-width: 520px; margin: 0 auto;
+      position: relative;
+    }
+    .page-intro strong { color: var(--text); font-weight: 500; }
+
+    /* ── CERTIFICATES ───────────────────────── */
+    .certs {
+      max-width: 860px; margin: 0 auto;
+      padding: 40px 48px 60px;
+      display: flex; flex-direction: column; gap: 48px;
+    }
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .cert-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 8px 40px rgba(201,164,74,.1);
+    }
+    .cert-frame {
+      display: block;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #08111e;
+      box-shadow: 0 4px 24px rgba(0,0,0,.5);
+    }
+    .cert-frame img { width: 100%; display: block; }
+    .cert-info { padding: 20px 4px 2px; }
+    .cert-name {
+      font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;
+    }
+    .cert-issuer {
+      font-size: 12px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+    }
+    .cert-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .cert-meta {
+      margin-top: 12px;
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+    .cert-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 12px;
+    }
+    .cert-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold);
+    }
+    .cert-link {
+      font-size: 12px; font-weight: 600;
+      color: var(--accent); text-decoration: none;
+    }
+    .cert-link:hover { text-decoration: underline; }
+
+    /* ── FINE PRINT ─────────────────────────── */
+    .fine-print {
+      max-width: 860px; margin: 0 auto;
+      padding: 0 48px 80px;
+      text-align: center;
+      font-size: 12px; color: #2e3444;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 720px) {
+      .subnav { padding: 0 16px; gap: 4px; }
+      .subnav-btn { padding: 5px 12px; font-size: 12px; }
+      .page-header { padding: 88px 20px 12px; }
+      .page-title { font-size: 30px; }
+      .page-intro { font-size: 14px; }
+      .certs { padding: 28px 16px 40px; gap: 28px; }
+      .cert-card { padding: 14px; }
+      .cert-info { padding: 14px 2px 2px; }
+      .cert-name { font-size: 16px; }
+      .fine-print { padding: 0 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="subnav">
+    <a class="subnav-btn" href="/#bio">Bio</a>
+    <a class="subnav-btn" href="/#projects">Projects</a>
+    <a class="subnav-btn active" href="/accreditation.html">Accreditation</a>
+  </div>
+
+  <header class="page-header">
+    <div class="page-label">Credentials</div>
+    <h1 class="page-title">Accreditation</h1>
+    <p class="page-intro">
+      Every qualification I hold, independently verified and professionally framed.
+      <strong>Both of them.</strong>
+    </p>
+  </header>
+
+  <main class="certs">
+
+    <div class="cert-card">
+      <a class="cert-frame" href="/certificate-non-achievement.jpg" target="_blank" rel="noopener">
+        <img src="/certificate-non-achievement.jpg" alt="Certificate of Non-Achievement, issued by the Bureau of Unearned Credentials">
+      </a>
+      <div class="cert-info">
+        <div class="cert-issuer">Bureau of Unearned Credentials</div>
+        <div class="cert-name">Certificate of Non-Achievement</div>
+        <p class="cert-desc">
+          Officially certifying zero diplomas, degrees, or qualifications of any kind,
+          at any level, in any and all academic disciplines — with no attempt made to
+          obtain any equivalency thereof. Countersigned by the Registrar (Your Mom)
+          and the Dean of Admissions (Your Face).
+        </p>
+        <div class="cert-meta">
+          <span class="cert-badge">Issued November 2026</span>
+          <span class="cert-badge">Gold seal included</span>
+          <a class="cert-link" href="/certificate-non-achievement.jpg" target="_blank" rel="noopener">View full size</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <a class="cert-frame" href="/certificate-vibe-coding.jpg" target="_blank" rel="noopener">
+        <img src="/certificate-vibe-coding.jpg" alt="Doctor of Vibe Coding degree, conferred by The Claude Code Institute of Applied Vibes">
+      </a>
+      <div class="cert-info">
+        <div class="cert-issuer">The Claude Code Institute of Applied Vibes</div>
+        <div class="cert-name">Doctor of Vibe Coding</div>
+        <p class="cert-desc">
+          Conferred by the authority vested in absolutely no one, with distinction in
+          Self-Taught Stubbornness, Relentless Motivation, Shipping Before Reading the
+          Docs, and Once Demanding Fifty Agents for a Single Task. Witnessed by the
+          Dean of Structured Thoughts and one paw print from the Napping Division.
+        </p>
+        <div class="cert-meta">
+          <span class="cert-badge">Zero formal training</span>
+          <span class="cert-badge">Unreasonable number of tokens</span>
+          <a class="cert-link" href="/certificate-vibe-coding.jpg" target="_blank" rel="noopener">View full size</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <p class="fine-print">
+    Neither document confers anything whatsoever. That is the point.
+  </p>
+
+</body>
+</html>

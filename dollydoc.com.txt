@@ -1,0 +1,37 @@
+; Domain: dollydoc.com
+; Updated: 2026-05-09
+; Changes: Added ImprovMX DKIM records, removed unused Microsoft/Lync and Resend records
+
+$ORIGIN dollydoc.com.
+
+; SOA Record
+@	3600	 IN 	SOA	ns31.domaincontrol.com.	dns.jomax.net. (
+					2026050901
+					28800
+					7200
+					604800
+					3600
+					)
+
+; A Record
+@	600	 IN 	A	216.198.79.1
+
+; TXT Records
+@	3600	 IN 	TXT	"v=spf1 include:spf.improvmx.com ~all"
+_dmarc	3600	 IN 	TXT	"v=DMARC1; p=quarantine; adkim=r; aspf=r"
+
+; CNAME Records
+dkimprovmx1._domainkey	3600	 IN 	CNAME	dkimprovmx1.improvmx.com.
+dkimprovmx2._domainkey	3600	 IN 	CNAME	dkimprovmx2.improvmx.com.
+email	3600	 IN 	CNAME	email.secureserver.net.
+pay	3600	 IN 	CNAME	paylinks.commerce.godaddy.com.
+www	3600	 IN 	CNAME	cname.vercel-dns.com.
+_domainconnect	3600	 IN 	CNAME	_domainconnect.gd.domaincontrol.com.
+
+; NS Records
+@	3600	 IN 	NS	ns31.domaincontrol.com.
+@	3600	 IN 	NS	ns32.domaincontrol.com.
+
+; MX Records
+@	3600	 IN 	MX	10	mx1.improvmx.com.
+@	3600	 IN 	MX	20	mx2.improvmx.com.
