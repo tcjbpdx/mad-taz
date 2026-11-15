@@ -777,9 +777,10 @@ function toggleDisco() {
   const btn = document.getElementById('disco-btn');
   if (active) {
     btn.textContent = 'Go Back';
-    // anchor button to current position before going fixed
-    const r = btn.getBoundingClientRect();
-    btnX = r.left; btnY = r.top;
+    // start centered above the dancers' heads, where it's easy to spot
+    const dr = document.getElementById('disco-dancers').getBoundingClientRect();
+    btnX = (window.innerWidth - btn.offsetWidth) / 2;
+    btnY = Math.max(40, dr.top - btn.offsetHeight - 36);
     btn.style.left = btnX + 'px';
     btn.style.top  = btnY + 'px';
     evadeHandler = evadeBtn;
