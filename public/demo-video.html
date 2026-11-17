@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MadTaz — Demo Video Skill</title>
+  <meta name="description" content="A free Claude Code skill: say “make a demo video of my app” and get a narrated, captioned video of your web app's real screens. You approve every word first.">
+  <meta property="og:title" content="Demo Video Skill">
+  <meta property="og:description" content="Say “make a demo video of my app” and get a narrated, captioned video of your real screens. You approve every word first.">
+  <meta property="og:image" content="https://madtaz.com/demo-video/card.jpg">
+  <meta property="og:url" content="https://madtaz.com/demo-video.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0c10;
+      --surface: #111418;
+      --border:  #1c2030;
+      --text:    #e2e4e9;
+      --muted:   #5a6070;
+      --soft:    #8a90a0;
+      --accent:  #4f8ef7;
+      --green:   #3fb07a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); }
+
+    /* ── SUBNAV (same as the other pages) ───── */
+    .subnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 44px;
+      display: flex; align-items: center;
+      padding: 0 48px;
+      gap: 6px;
+      background: rgba(10, 12, 16, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .subnav-btn {
+      display: inline-flex; align-items: center;
+      padding: 5px 16px;
+      border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .subnav-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+    .subnav-btn.active {
+      color: var(--accent);
+      background: rgba(79,142,247,.08);
+      border-color: rgba(79,142,247,.3);
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .page-header {
+      max-width: 860px; margin: 0 auto;
+      padding: 120px 48px 32px;
+      text-align: center;
+      position: relative;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(79,142,247,.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header > * { position: relative; }
+    .page-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .page-title {
+      font-size: 42px; font-weight: 800; color: #ffffff;
+      letter-spacing: -.02em; margin-bottom: 16px;
+    }
+    .page-intro {
+      font-size: 17px; color: var(--soft); line-height: 1.7;
+      max-width: 580px; margin: 0 auto 28px;
+    }
+    .page-intro strong { color: var(--text); font-weight: 600; }
+
+    .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 22px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 12px 24px;
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all .15s; letter-spacing: .01em;
+    }
+    .btn-solid { background: var(--accent); color: #fff; }
+    .btn-solid:hover { background: #3a7ae8; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: #2d3550; background: var(--surface); }
+    .btn-size { font-weight: 500; opacity: .75; }
+
+    .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--soft);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 4px 12px;
+    }
+    .chip::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── LAYOUT ─────────────────────────────── */
+    main { max-width: 860px; margin: 0 auto; padding: 8px 48px 40px; }
+    section { margin-bottom: 64px; scroll-margin-top: 64px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 26px; font-weight: 700; color: #ffffff;
+      letter-spacing: -.02em; margin-bottom: 20px;
+    }
+    .lead { color: var(--soft); font-size: 15px; margin: -8px 0 24px; max-width: 640px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    /* ── SAMPLE VIDEO ───────────────────────── */
+    .video-card { padding: 16px; }
+    .video-card video {
+      display: block; width: 100%; aspect-ratio: 16 / 9;
+      border-radius: 6px; background: #000;
+      box-shadow: 0 4px 24px rgba(0,0,0,.5);
+    }
+    .video-note { padding: 14px 4px 2px; font-size: 13px; color: var(--soft); }
+    .video-note strong { color: var(--text); font-weight: 600; }
+
+    /* ── STEPS ──────────────────────────────── */
+    .steps {
+      list-style: none; counter-reset: step;
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;
+    }
+    .steps li {
+      counter-increment: step;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 18px 18px;
+    }
+    .steps li::before {
+      content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: rgba(79,142,247,.12); color: var(--accent);
+      font-size: 13px; font-weight: 700; margin-bottom: 10px;
+    }
+    .steps li.key { border-color: rgba(63,176,122,.45); }
+    .steps li.key::before { background: rgba(63,176,122,.14); color: var(--green); }
+    .steps h3 { font-size: 15px; color: #fff; margin-bottom: 4px; }
+    .steps p { font-size: 13px; color: var(--soft); line-height: 1.55; }
+
+    figure.shot { margin-top: 18px; padding: 16px; }
+    figure.shot img {
+      display: block; width: 100%; height: auto; border-radius: 6px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.5);
+    }
+    figure.shot figcaption { padding: 14px 4px 2px; font-size: 13px; color: var(--soft); }
+    figure.shot figcaption strong { color: var(--text); font-weight: 600; }
+
+    /* ── LISTS ──────────────────────────────── */
+    .need { padding: 8px 22px; }
+    .need li {
+      list-style: none; display: grid; grid-template-columns: 22px 1fr; gap: 10px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; color: var(--soft);
+    }
+    .need li:last-child { border-bottom: 0; }
+    .need li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .need li.optional::before { content: '+'; color: var(--accent); }
+    .need strong { color: var(--text); font-weight: 600; }
+
+    .start { list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
+    .start li {
+      counter-increment: s;
+      display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start;
+      padding: 16px 18px; font-size: 14px; color: var(--soft);
+    }
+    .start li::before {
+      content: counter(s);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(79,142,247,.12); color: var(--accent);
+      font-size: 13px; font-weight: 700;
+    }
+    .start strong { color: var(--text); font-weight: 600; }
+    .say {
+      display: block;
+      margin-top: 10px; padding: 10px 14px;
+      border-left: 3px solid var(--accent); border-radius: 4px;
+      background: rgba(79,142,247,.06);
+      color: var(--text); font-size: 14px;
+    }
+
+    .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .note { padding: 18px; }
+    .note h3 { font-size: 15px; color: #fff; margin-bottom: 6px; }
+    .note p { font-size: 13px; color: var(--soft); line-height: 1.6; }
+    .note.warn { border-color: rgba(201,164,74,.4); }
+    .note.warn h3 { color: #e3c06a; }
+
+    .feedback { padding: 22px; font-size: 14px; color: var(--soft); }
+    .feedback strong { color: var(--text); font-weight: 600; }
+    .feedback p + p { margin-top: 10px; }
+    .feedback .mail { font-weight: 600; text-decoration: none; }
+    .feedback .mail:hover { text-decoration: underline; }
+
+    .fine-print {
+      max-width: 860px; margin: 0 auto;
+      padding: 0 48px 80px;
+      text-align: center;
+      font-size: 12px; color: #3a4152;
+    }
+
+    a:focus-visible, video:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 760px) {
+      .steps { grid-template-columns: 1fr; }
+      .notes { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .subnav { padding: 0 16px; gap: 4px; }
+      .subnav-btn { padding: 5px 12px; font-size: 12px; }
+      .page-header { padding: 88px 16px 20px; }
+      .page-title { font-size: 30px; }
+      .page-intro { font-size: 15px; }
+      .ctas { flex-direction: column; }
+      .btn { width: 100%; padding: 14px 20px; font-size: 15px; }
+      main { padding: 4px 16px 24px; }
+      section { margin-bottom: 48px; }
+      h2 { font-size: 22px; }
+      .video-card, figure.shot { padding: 10px; }
+      .need { padding: 4px 16px; }
+      .start li { padding: 14px; grid-template-columns: 30px 1fr; gap: 10px; }
+      .fine-print { padding: 0 16px 48px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .subnav-btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="subnav">
+    <a class="subnav-btn" href="/#bio">Bio</a>
+    <a class="subnav-btn active" href="/#projects">Projects</a>
+    <a class="subnav-btn" href="/accreditation.html">Accreditation</a>
+  </div>
+
+  <header class="page-header">
+    <div class="page-label">A skill for Claude Code</div>
+    <h1 class="page-title">Demo Video Skill</h1>
+    <p class="page-intro">
+      Tell Claude Code <strong>“Make a demo video of my app”</strong> and get back a narrated,
+      captioned video of your app's real screens. <strong>You approve every word before anything
+      is recorded.</strong>
+    </p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="/demo-video-skill.zip" download="demo-video-skill.zip">
+        Download the skill <span class="btn-size">· zip, 196 KB</span>
+      </a>
+      <a class="btn btn-ghost" href="#sample">Watch a sample</a>
+    </div>
+    <div class="chips">
+      <span class="chip">Free</span>
+      <span class="chip">Mac only</span>
+      <span class="chip">For apps that open in a web browser</span>
+      <span class="chip">Version 1 · November 2026</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SAMPLE -->
+    <section id="sample">
+      <div class="section-label">Sample</div>
+      <h2>What it makes</h2>
+      <div class="card video-card">
+        <video controls playsinline preload="metadata" poster="/demo-video/poster.jpg"
+               aria-label="A 43-second sample demo video of Fernhouse, a made-up plant-care app">
+          <source src="/demo-video/fernhouse-demo.mp4" type="video/mp4">
+          Your browser can't play this video. <a href="/demo-video/fernhouse-demo.mp4">Download it instead.</a>
+        </video>
+        <p class="video-note">
+          <strong>Fernhouse</strong> is a tiny made-up plant-care app that comes in the download
+          for practice. The skill wrote this script, filmed the screens and checked the result:
+          43 seconds, 1920×1080, with a Google voice and captions.
+        </p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how">
+      <div class="section-label">How it works</div>
+      <h2>One sentence from you, six steps from Claude</h2>
+      <ol class="steps">
+        <li>
+          <h3>Checks your Mac</h3>
+          <p>Anything missing is explained one thing at a time, with the fix spelled out.</p>
+        </li>
+        <li>
+          <h3>Asks a few questions</h3>
+          <p>What the video is for, what to show off, how long, and which voice. It fills in the settings for you.</p>
+        </li>
+        <li>
+          <h3>Looks around your app</h3>
+          <p>A hidden browser visits each page without clicking anything, so the script uses your real button names.</p>
+        </li>
+        <li>
+          <h3>Writes a storyboard</h3>
+          <p>Every scene's picture and words, where the pointer goes, and how long the video will run.</p>
+        </li>
+        <li class="key">
+          <h3>You approve the words</h3>
+          <p>Nothing is recorded until you say so. Change a spoken word afterwards and it asks you again.</p>
+        </li>
+        <li>
+          <h3>Makes and checks it</h3>
+          <p>Narration, camera moves, a pointer, captions. Then it checks the video and saves each new version beside the last.</p>
+        </li>
+      </ol>
+      <figure class="card shot">
+        <img src="/demo-video/storyboard.jpg" width="1280" height="1122" loading="lazy"
+             alt="The storyboard page: a green bar reading Status: APPROVED, the estimated length against the target, the title card, and scene one with its picture and words">
+        <figcaption>
+          <strong>The storyboard opens in your browser.</strong> Red marks what the pointer will aim at,
+          and the underlined words are the moment it happens. The bar at the top says DRAFT until you approve.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- WHAT YOU NEED -->
+    <section id="need">
+      <div class="section-label">Before you start</div>
+      <h2>What you need</h2>
+      <ul class="card need">
+        <li><span><strong>A Mac.</strong> It doesn't work on Windows yet.</span></li>
+        <li><span><strong>Claude Code</strong>, opened in your app's project folder.</span></li>
+        <li><span><strong>Node</strong>, the free program the tools run on. If you don't have it, the guide shows you how to install it from nodejs.org.</span></li>
+        <li><span><strong>An app that opens in a web browser</strong>, on your computer or online.</span></li>
+        <li><span><strong>A test account in your app, with tidy, made-up data.</strong> The hidden browser really signs in and clicks around, and anything in that account can end up in the video.</span></li>
+        <li><span><strong>About an hour the first time</strong>, mostly installing and reading. It downloads about 300 MB of helpers once. After that, a new video takes about fifteen minutes.</span></li>
+        <li class="optional"><span><strong>Optional: a Google AI Studio key</strong> for a natural-sounding voice. It costs pennies per video, on your own account.</span></li>
+      </ul>
+    </section>
+
+    <!-- GET STARTED -->
+    <section id="start">
+      <div class="section-label">Get started</div>
+      <h2>Four steps to your first video</h2>
+      <p class="lead">The download includes a full guide (README.md) written for a first-time Mac user. This is the short version.</p>
+      <ol class="start">
+        <li class="card"><span><strong>Download the zip and double-click it</strong> in your Downloads folder. You'll get a folder called demo-video-skill.</span></li>
+        <li class="card"><span><strong>Open Claude Code in your app's project folder</strong> and say:
+          <span class="say">Copy the demo-video skill folder from the demo-video-skill folder in my Downloads folder into this project's .claude/skills folder.</span></span></li>
+        <li class="card"><span><strong>Start Claude Code fresh</strong> so it notices the skill, then ask <em>“Do you have the demo-video skill?”</em> It should say yes.</span></li>
+        <li class="card"><span><strong>Say the sentence:</strong>
+          <span class="say">Make a demo video of my app.</span></span></li>
+      </ol>
+    </section>
+
+    <!-- GOOD TO KNOW -->
+    <section id="know">
+      <div class="section-label">Good to know</div>
+      <h2>Before you post your video</h2>
+      <div class="notes">
+        <div class="card note warn">
+          <h3>The free Mac voice is for practice</h3>
+          <p>Apple's licence allows its built-in voices for personal, non-commercial use only. Practise
+             with it, then switch to a Google voice for any video you publish, share publicly or use
+             for a business. Only the voice changes.</p>
+        </div>
+        <div class="card note">
+          <h3>Your passwords stay private</h3>
+          <p>Your test account's password and any voice key go in a private file that Claude opens for
+             you in TextEdit. Claude never reads it, and never asks for a password in the chat.</p>
+        </div>
+        <div class="card note">
+          <h3>It won't press risky buttons</h3>
+          <p>Delete, pay, send, invite, publish and sign-out buttons are refused. It can't know every
+             app, though, which is why it needs a test account.</p>
+        </div>
+        <div class="card note">
+          <h3>Nothing is uploaded</h3>
+          <p>Your video stays on your Mac. Every version is kept (cut 1, cut 2…) and nothing is
+             overwritten.</p>
+        </div>
+        <div class="card note">
+          <h3>What it can't do yet</h3>
+          <p>Phone apps from the App Store, Windows, and filming live motion. The video is made from
+             still screens with smooth camera moves. For “Sign in with Google or Apple”, a window
+             opens and you sign in once yourself.</p>
+        </div>
+        <div class="card note">
+          <h3>Made for short videos</h3>
+          <p>It's built for videos of 30 to 90 seconds: one idea per scene, with a title card and an
+             end card in your app's name and colour.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section id="feedback">
+      <div class="section-label">Version 2</div>
+      <h2>Tell me how it went</h2>
+      <div class="card feedback">
+        <p>Version 1 has been tested start to finish on the made-up practice app, on one Mac.
+           <strong>Your app is where it meets the real world</strong>, so I want to hear what broke and what confused you.</p>
+        <p>After your first video, ask Claude <em>“Help me fill in the demo video feedback form.”</em>
+           It asks a few short questions and saves your answers as a file. Send that file to
+           <a class="mail" href="mailto:taz@madtaz.com?subject=Demo%20Video%20Skill%20feedback">taz@madtaz.com</a>.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <p class="fine-print">
+    Free to use. Comes as is, with no promises. Use a test account.
+  </p>
+
+</body>
+</html>
