@@ -207,7 +207,39 @@
     .article-end a:hover { text-decoration: underline; }
     .article-end .home { color: var(--soft); }
 
-    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+    /* ── SHARE ──────────────────────────────── */
+    /* Plain links for each network (no third-party scripts or trackers). The
+       phone share sheet and Copy link buttons start hidden and are switched
+       on by the script at the bottom, so nothing dead shows without it. */
+    .share {
+      max-width: 700px; margin: 0 auto;
+      padding: 24px 40px 0;
+    }
+    .share-inner { border-top: 1px solid var(--border); padding-top: 26px; }
+    .share-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+    }
+    .share-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .share-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 40px; padding: 8px 16px;
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 999px;
+      font: inherit; font-size: 14px; font-weight: 600; line-height: 1.2;
+      text-decoration: none; cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .share-btn:hover { border-color: rgba(79,142,247,.5); color: #ffffff; }
+    .share-btn.primary {
+      background: rgba(79,142,247,.12); border-color: rgba(79,142,247,.35); color: var(--accent);
+    }
+    .share-btn[hidden] { display: none; }
+    .share-status { min-height: 20px; margin-top: 10px; font-size: 13px; color: var(--soft); }
+    .share + .article-end { padding-top: 20px; }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+    .share-btn:focus-visible { border-radius: 999px; }
 
     /* ── RESPONSIVE ─────────────────────────── */
     @media (max-width: 720px) {
@@ -223,14 +255,16 @@
       .try { padding: 22px 18px 18px; margin-top: 44px; }
       .try .steps li { padding: 0; }
       .closing { font-size: 19px; }
+      .share { padding: 20px 16px 0; }
       .article-end { padding: 24px 16px 64px; }
+      .share + .article-end { padding-top: 16px; }
     }
     @media (max-width: 380px) {
       .subnav-btn { padding: 5px 9px; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .subnav-btn { transition: none; }
+      .subnav-btn, .share-btn { transition: none; }
     }
   </style>
 </head>
@@ -340,12 +374,78 @@
     </article>
   </main>
 
+  <section class="share" aria-labelledby="share-title">
+    <div class="share-inner">
+      <h2 class="share-title" id="share-title">Share this article</h2>
+      <div class="share-row">
+        <button type="button" class="share-btn primary" id="share-native" hidden>Share…</button>
+        <button type="button" class="share-btn" id="share-copy" hidden>Copy link</button>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmadtaz.com%2Farticles%2Fthe-meeting-before-the-code.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn (opens in a new tab)">LinkedIn</a>
+        <a class="share-btn" href="https://x.com/intent/tweet?text=The%20Meeting%20Before%20the%20Code&amp;url=https%3A%2F%2Fmadtaz.com%2Farticles%2Fthe-meeting-before-the-code.html" target="_blank" rel="noopener" aria-label="Share on X (opens in a new tab)">X</a>
+        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmadtaz.com%2Farticles%2Fthe-meeting-before-the-code.html" target="_blank" rel="noopener" aria-label="Share on Facebook (opens in a new tab)">Facebook</a>
+        <a class="share-btn" href="mailto:?subject=The%20Meeting%20Before%20the%20Code&amp;body=A%20truck%20driver%27s%20case%20for%20treating%20AI%20as%20a%20colleague%2C%20not%20just%20a%20code%20machine.%0A%0Ahttps%3A%2F%2Fmadtaz.com%2Farticles%2Fthe-meeting-before-the-code.html" aria-label="Share by email">Email</a>
+      </div>
+      <p class="share-status" id="share-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
   <nav class="article-end" aria-label="More">
     <div class="article-end-inner">
       <a href="/articles.html">← All articles</a>
       <a class="home" href="/">madtaz.com</a>
     </div>
   </nav>
+
+  <script>
+    // Share row. The network links above work on their own; this only adds the
+    // phone's own share sheet (where the browser has one) and a Copy link button.
+    // It always shares the article's permanent address, never whatever is in the
+    // address bar (which could carry tracking bits or a #section).
+    (function () {
+      var url = 'https://madtaz.com/articles/the-meeting-before-the-code.html';
+      var title = 'The Meeting Before the Code';
+      var text = 'A truck driver’s case for treating AI as a colleague, not just a code machine.';
+      var status = document.getElementById('share-status');
+      var timer;
+      function say(msg) {
+        status.textContent = msg;
+        clearTimeout(timer);
+        timer = setTimeout(function () { status.textContent = ''; }, 4000);
+      }
+
+      var native = document.getElementById('share-native');
+      if (navigator.share) {
+        native.hidden = false;
+        native.addEventListener('click', function () {
+          // Closing the share sheet without picking anything rejects; that is not an error.
+          navigator.share({ title: title, text: text, url: url }).catch(function () {});
+        });
+      }
+
+      var copy = document.getElementById('share-copy');
+      copy.hidden = false;
+      copy.addEventListener('click', function () {
+        function oldWay() {
+          var box = document.createElement('textarea');
+          box.value = url;
+          box.setAttribute('readonly', '');
+          box.style.position = 'fixed';
+          box.style.opacity = '0';
+          document.body.appendChild(box);
+          box.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(box);
+          say(ok ? 'Link copied.' : 'Couldn’t copy it. Here’s the link: ' + url);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () { say('Link copied.'); }, oldWay);
+        } else {
+          oldWay();
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>
