@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#0a0c10">
+  <meta name="color-scheme" content="dark">
   <title>MadTaz — The Meeting Before the Code</title>
   <meta name="description" content="A truck driver’s case for treating AI as a colleague, not just a code machine.">
   <meta name="author" content="Taz">
@@ -33,29 +33,27 @@
   }
   </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* A light reading page: white paper, a serif for the long text and the
-       site's heavy sans for the title and headings. The link blue is darker
-       than the site's #4f8ef7, which is too faint to read as text on white.
-       It stays light even when a phone is set to dark mode: the article is
-       meant to read like print. */
+    /* Paper on the dark site: the menu, title and byline sit on the site's own
+       near-black, and the article itself is a soft off-white sheet laid on it. */
     :root {
-      --bg:         #ffffff;
-      --panel:      #f5f8fd;
-      --panel-line: #dde6f5;
-      --line:       #e7e9ee;
-      --ink:        #15171c;
-      --body:       #2b2e35;
-      --soft:       #596070;
-      --muted:      #6a7181;
-      --accent:     #1f5fd6;
-      --brand:      #4f8ef7;
-      --serif:      Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
-      --sans:       -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      color-scheme: light;
+      --bg:#0a0c10; --panel:#e6ebf3; --panel-line:#d2dae7; --line:#1c2030;
+      --ink:#f2f3f6; --body:#c9ccd5; --soft:#9aa0ad; --muted:#7d8494;
+      --accent:#6ea2ff; --brand:#4f8ef7;
+      --selection:rgba(79,142,247,.35);
+      --nav-bg:rgba(10,12,16,.94); --nav-line:#1c2030; --nav-text:#8a90a0;
+      --nav-hover-text:#e2e4e9; --nav-hover-bg:#141821; --nav-hover-line:#262c3a;
+      --nav-active-text:#6ea2ff; --nav-active-bg:rgba(79,142,247,.12); --nav-active-line:rgba(79,142,247,.35);
+      --face-bg:#fdf0e4; --dot:#4a5060; --step-bg:#1f5fd6; --on-accent:#ffffff;
+      --btn-bg:#ffffff; --btn-line:#cfd3da; --primary:#1f5fd6; --primary-hover:#1a51b8;
+      --paper:#f1efea;
+      --serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color-scheme: dark;
     }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
@@ -67,18 +65,18 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: #cfe0ff; color: var(--ink); }
+    ::selection { background: var(--selection); color: var(--ink); }
     a { color: var(--accent); }
 
-    /* ── SUBNAV (same links as the other pages, light here) ── */
+    /* ── SUBNAV (same links as the other pages) ── */
     .subnav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       height: 44px;
       display: flex; align-items: center;
       padding: 0 48px;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.95);
-      border-bottom: 1px solid var(--line);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--nav-line);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
@@ -88,19 +86,19 @@
       border-radius: 6px;
       font-size: 13px; font-weight: 600;
       text-decoration: none;
-      color: var(--muted);
+      color: var(--nav-text);
       border: 1px solid transparent;
       transition: color .15s, background .15s, border-color .15s;
     }
     .subnav-btn:hover {
-      color: var(--ink);
-      background: #f3f4f7;
-      border-color: var(--line);
+      color: var(--nav-hover-text);
+      background: var(--nav-hover-bg);
+      border-color: var(--nav-hover-line);
     }
     .subnav-btn.active {
-      color: var(--accent);
-      background: rgba(31,95,214,.07);
-      border-color: rgba(31,95,214,.25);
+      color: var(--nav-active-text);
+      background: var(--nav-active-bg);
+      border-color: var(--nav-active-line);
     }
 
     /* ── HEADER ─────────────────────────────── */
@@ -135,14 +133,14 @@
       width: 48px; height: 48px; flex: none;
       border-radius: 50%;
       object-fit: contain;
-      background: #fdf0e4;
+      background: var(--face-bg);
       padding: 4px;
     }
     .byline-text { display: flex; flex-direction: column; line-height: 1.4; }
     .byline-name { font-size: 15px; color: var(--body); }
     .byline-name strong { color: var(--ink); font-weight: 700; }
     .byline-meta { font-size: 14px; color: var(--muted); }
-    .byline .dot { margin: 0 7px; color: #b8bdc7; }
+    .byline .dot { margin: 0 7px; color: var(--dot); }
 
     /* ── ARTICLE ────────────────────────────── */
     .article {
@@ -195,7 +193,7 @@
       content: counter(step);
       display: inline-flex; align-items: center; justify-content: center;
       width: 30px; height: 30px; border-radius: 50%;
-      background: var(--accent); color: #ffffff;
+      background: var(--step-bg); color: var(--on-accent);
       font-family: var(--sans); font-size: 14px; font-weight: 700;
     }
 
@@ -249,15 +247,15 @@
     .share-btn {
       display: inline-flex; align-items: center; justify-content: center;
       min-height: 40px; padding: 8px 18px;
-      background: #ffffff; color: var(--body);
-      border: 1px solid #d6dae2; border-radius: 999px;
+      background: var(--btn-bg); color: var(--body);
+      border: 1px solid var(--btn-line); border-radius: 999px;
       font: inherit; font-size: 14px; font-weight: 600; line-height: 1.2;
       text-decoration: none; cursor: pointer;
       transition: border-color .15s, color .15s, background .15s;
     }
     .share-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .share-btn.primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
-    .share-btn.primary:hover { background: #1a51b8; border-color: #1a51b8; color: #ffffff; }
+    .share-btn.primary { background: var(--primary); border-color: var(--primary); color: var(--on-accent); }
+    .share-btn.primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); color: var(--on-accent); }
     .share-btn[hidden] { display: none; }
     .share-status { min-height: 20px; margin-top: 10px; font-size: 13px; color: var(--soft); }
     .share + .article-end { padding-top: 20px; }
@@ -292,7 +290,27 @@
       html { scroll-behavior: auto; }
       .subnav-btn, .share-btn { transition: none; }
     }
-</style>
+
+    /* The sheet: article, share row and footer read as one piece of paper. */
+    .article, .share, .article-end {
+      --ink:#15171c; --body:#2b2e35; --soft:#596070; --muted:#6a7181;
+      --line:#dedbd3; --accent:#1f5fd6; --dot:#b8bdc7;
+      background: var(--paper);
+      max-width: 820px;
+    }
+    .article { padding: 56px 70px 24px; border-radius: 16px 16px 0 0; }
+    .share { padding: 28px 70px 0; }
+    .article-end, .share + .article-end { padding: 28px 70px 56px; border-radius: 0 0 16px 16px; margin-bottom: 88px; }
+    .byline { margin-bottom: 36px; }
+    @media (max-width: 720px) {
+      .page-header { padding: 84px 24px 0; }
+      .article, .share, .article-end { margin-left: 8px; margin-right: 8px; }
+      .article { padding: 32px 16px 16px; border-radius: 14px 14px 0 0; }
+      .share { padding: 20px 16px 0; }
+      .article-end, .share + .article-end { padding: 24px 16px 40px; border-radius: 0 0 14px 14px; margin-bottom: 48px; }
+      .byline { margin-bottom: 24px; }
+    }
+  </style>
 </head>
 <body>
 
