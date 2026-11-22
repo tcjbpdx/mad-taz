@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MadTaz — Explain This Change</title>
+  <meta name="description" content="A free Claude Code skill: an on-demand code review explainer. Press a button on any change and hear a short, narrated walkthrough with the exact lines lit up, checked against the diff before you see it.">
+  <meta property="og:title" content="Explain This Change">
+  <meta property="og:description" content="An on-demand code review explainer: a short, narrated walkthrough of any change, with the exact lines lit up as they are talked about.">
+  <meta property="og:image" content="https://madtaz.com/explain-this-change/card.jpg">
+  <meta property="og:url" content="https://madtaz.com/explain-this-change.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0c10;
+      --surface: #111418;
+      --border:  #1c2030;
+      --text:    #e2e4e9;
+      --muted:   #5a6070;
+      --soft:    #8a90a0;
+      --accent:  #4f8ef7;
+      --green:   #3fb07a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); }
+
+    /* ── SUBNAV (same as the other pages) ───── */
+    .subnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 44px;
+      display: flex; align-items: center;
+      padding: 0 48px;
+      gap: 6px;
+      background: rgba(10, 12, 16, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .subnav-btn {
+      display: inline-flex; align-items: center;
+      padding: 5px 16px;
+      border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .subnav-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+    .subnav-btn.active {
+      color: var(--accent);
+      background: rgba(79,142,247,.08);
+      border-color: rgba(79,142,247,.3);
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .page-header {
+      max-width: 860px; margin: 0 auto;
+      padding: 120px 48px 32px;
+      text-align: center;
+      position: relative;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(79,142,247,.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header > * { position: relative; }
+    .page-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .page-title {
+      font-size: 42px; font-weight: 800; color: #ffffff;
+      letter-spacing: -.02em; margin-bottom: 16px;
+    }
+    .page-intro {
+      font-size: 17px; color: var(--soft); line-height: 1.7;
+      max-width: 600px; margin: 0 auto 28px;
+    }
+    .page-intro strong { color: var(--text); font-weight: 600; }
+
+    .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 22px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 12px 24px;
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all .15s; letter-spacing: .01em;
+    }
+    .btn-solid { background: var(--accent); color: #fff; }
+    .btn-solid:hover { background: #3a7ae8; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: #2d3550; background: var(--surface); }
+    .btn-size { font-weight: 500; opacity: .75; }
+
+    .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--soft);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 4px 12px;
+    }
+    .chip::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── LAYOUT ─────────────────────────────── */
+    main { max-width: 860px; margin: 0 auto; padding: 8px 48px 40px; }
+    section { margin-bottom: 64px; scroll-margin-top: 64px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 26px; font-weight: 700; color: #ffffff;
+      letter-spacing: -.02em; margin-bottom: 20px;
+    }
+    .lead { color: var(--soft); font-size: 15px; margin: -8px 0 24px; max-width: 640px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    /* ── SHOWCASE VIDEO + CHAPTERS ──────────── */
+    .video-card { padding: 16px; }
+    .video-card video {
+      display: block; width: 100%; aspect-ratio: 16 / 9;
+      border-radius: 6px; background: #000;
+      box-shadow: 0 4px 24px rgba(0,0,0,.5);
+    }
+    .chapters {
+      list-style: none;
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
+      margin-top: 14px;
+    }
+    .chapters button {
+      width: 100%; text-align: left;
+      display: grid; grid-template-columns: 42px 1fr; gap: 8px; align-items: baseline;
+      padding: 8px 10px;
+      background: transparent; color: var(--soft);
+      border: 1px solid var(--border); border-radius: 8px;
+      font: inherit; font-size: 13px; cursor: pointer;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .chapters button:hover { color: var(--text); background: rgba(79,142,247,.06); border-color: #2d3550; }
+    .chapters button[aria-current="true"] { color: var(--text); border-color: rgba(79,142,247,.5); background: rgba(79,142,247,.08); }
+    .chapters .t { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+    .video-note { padding: 14px 4px 2px; font-size: 13px; color: var(--soft); }
+    .video-note strong { color: var(--text); font-weight: 600; }
+
+    .sample-link {
+      display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+      margin-top: 14px; padding: 18px 20px;
+      text-decoration: none; color: var(--soft); font-size: 14px;
+      transition: border-color .15s;
+    }
+    .sample-link:hover { border-color: rgba(79,142,247,.45); }
+    .sample-link strong { display: block; color: #fff; font-size: 15px; margin-bottom: 2px; }
+    .sample-link .go { color: var(--accent); font-weight: 600; white-space: nowrap; }
+    kbd {
+      display: inline-block; min-width: 20px; padding: 0 5px;
+      border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px;
+      background: var(--bg); color: var(--text);
+      font: 600 11px/18px ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center;
+    }
+
+    /* ── FEATURE + NOTE GRIDS ───────────────── */
+    .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .note { padding: 18px; }
+    .note h3 { font-size: 15px; color: #fff; margin-bottom: 6px; }
+    .note p { font-size: 13px; color: var(--soft); line-height: 1.6; }
+    .note.key { border-color: rgba(63,176,122,.45); }
+    .note.key h3 { color: #7fd3a6; }
+    .note.warn { border-color: rgba(201,164,74,.4); }
+    .note.warn h3 { color: #e3c06a; }
+    .note em { color: var(--text); font-style: normal; font-weight: 600; }
+
+    /* ── CODE ───────────────────────────────── */
+    pre.code {
+      margin-top: 14px; padding: 16px 18px; overflow-x: auto;
+      font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--text);
+    }
+    pre.code .c { color: var(--muted); }
+    pre.code .k { color: #c792ea; }
+    pre.code .s { color: #c3e88d; }
+    code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--text); }
+
+    /* ── LISTS ──────────────────────────────── */
+    .need { padding: 8px 22px; }
+    .need li {
+      list-style: none; display: grid; grid-template-columns: 22px 1fr; gap: 10px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; color: var(--soft);
+    }
+    .need li:last-child { border-bottom: 0; }
+    .need li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .need li.optional::before { content: '+'; color: var(--accent); }
+    .need li.off::before { content: '○'; color: var(--accent); }
+    .need strong { color: var(--text); font-weight: 600; }
+
+    .start { list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 12px; }
+    .start li {
+      counter-increment: s;
+      display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start;
+      padding: 16px 18px; font-size: 14px; color: var(--soft);
+    }
+    .start li::before {
+      content: counter(s);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(79,142,247,.12); color: var(--accent);
+      font-size: 13px; font-weight: 700;
+    }
+    .start strong { color: var(--text); font-weight: 600; }
+    .say {
+      display: block;
+      margin-top: 10px; padding: 10px 14px;
+      border-left: 3px solid var(--accent); border-radius: 4px;
+      background: rgba(79,142,247,.06);
+      color: var(--text); font-size: 14px;
+    }
+
+    .untested { padding: 18px 22px; font-size: 14px; color: var(--soft); }
+    .untested ul { margin: 10px 0 0 18px; }
+    .untested li { padding: 3px 0; }
+    .untested strong { color: var(--text); font-weight: 600; }
+
+    .feedback { padding: 22px; font-size: 14px; color: var(--soft); }
+    .feedback strong { color: var(--text); font-weight: 600; }
+    .feedback p + p { margin-top: 10px; }
+    .feedback .mail { font-weight: 600; text-decoration: none; }
+    .feedback .mail:hover { text-decoration: underline; }
+
+    .fine-print {
+      max-width: 860px; margin: 0 auto;
+      padding: 0 48px 80px;
+      text-align: center;
+      font-size: 12px; color: #3a4152;
+    }
+
+    a:focus-visible, video:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 760px) {
+      .notes, .chapters { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .subnav { padding: 0 16px; gap: 4px; }
+      .subnav-btn { padding: 5px 12px; font-size: 12px; }
+      .page-header { padding: 88px 16px 20px; }
+      .page-title { font-size: 30px; }
+      .page-intro { font-size: 15px; }
+      .ctas { flex-direction: column; }
+      .btn { width: 100%; padding: 14px 20px; font-size: 15px; }
+      main { padding: 4px 16px 24px; }
+      section { margin-bottom: 48px; }
+      h2 { font-size: 22px; }
+      .video-card { padding: 10px; }
+      .sample-link { grid-template-columns: 1fr; gap: 8px; }
+      .need { padding: 4px 16px; }
+      .start li { padding: 14px; grid-template-columns: 30px 1fr; gap: 10px; }
+      pre.code { font-size: 12px; padding: 14px; }
+      .fine-print { padding: 0 16px 48px; }
+    }
+    @media (max-width: 380px) {
+      .subnav-btn { padding: 5px 9px; }   /* keeps all four top-bar buttons on the narrowest phones */
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .subnav-btn, .chapters button { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="subnav">
+    <a class="subnav-btn" href="/#bio">Bio</a>
+    <a class="subnav-btn active" href="/#projects">Projects</a>
+    <a class="subnav-btn" href="/accreditation.html">Accreditation</a>
+    <a class="subnav-btn" href="/articles.html">Articles</a>
+  </div>
+
+  <header class="page-header">
+    <div class="page-label">A skill for Claude Code</div>
+    <h1 class="page-title">Explain This Change</h1>
+    <p class="page-intro">
+      An <strong>on-demand code review explainer.</strong> Press a button on any change, from a
+      whole pull request down to one hunk, and hear a short narrated walkthrough with the exact
+      lines lit up as they are talked about. <strong>Every claim is checked against the diff
+      before you see it.</strong>
+    </p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="/explain-this-change-skill.zip" download="explain-this-change-skill.zip">
+        Download the skill <span class="btn-size">· zip, 295 KB</span>
+      </a>
+      <a class="btn btn-ghost" href="#showcase">Watch the showcase</a>
+    </div>
+    <div class="chips">
+      <span class="chip">Free</span>
+      <span class="chip">Runs on your own computer</span>
+      <span class="chip">Any project in git</span>
+      <span class="chip">Version 1 · November 2026</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SHOWCASE -->
+    <section id="showcase">
+      <div class="section-label">Showcase</div>
+      <h2>Two minutes on a made-up project</h2>
+      <div class="card video-card">
+        <video id="film" controls playsinline preload="metadata" poster="/explain-this-change/poster.jpg"
+               aria-label="A two-minute showcase of Explain This Change on Parcel Pigeon, a made-up shipping app">
+          <source src="/explain-this-change/explain-this-change-showcase.mp4" type="video/mp4">
+          <track kind="chapters" src="/explain-this-change/chapters.vtt" srclang="en" label="Chapters" default>
+          Your browser can't play this video. <a href="/explain-this-change/explain-this-change-showcase.mp4">Download it instead.</a>
+        </video>
+        <ol class="chapters" aria-label="Chapters">
+          <li><button type="button" data-t="3"><span class="t">0:03</span><span>Press a button on any change</span></button></li>
+          <li><button type="button" data-t="7"><span class="t">0:07</span><span>Quick: the whole change in about 30 seconds</span></button></li>
+          <li><button type="button" data-t="42.167"><span class="t">0:42</span><span>Deep dive: the code lights up as it is talked about</span></button></li>
+          <li><button type="button" data-t="59.467"><span class="t">0:59</span><span>Ask a question mid-walkthrough</span></button></li>
+          <li><button type="button" data-t="85.8"><span class="t">1:25</span><span>Proof: never a pass without evidence</span></button></li>
+          <li><button type="button" data-t="102.033"><span class="t">1:42</span><span>Review focus: what to check</span></button></li>
+        </ol>
+        <p class="video-note">
+          <strong>Parcel Pigeon</strong> is a tiny made-up shipping app that comes in the download for
+          practice. Everything on screen is a real page the skill made for one of its changes. The
+          voices here are Google's (an optional setting); by default it uses your computer's own.
+        </p>
+      </div>
+      <a class="card sample-link" href="/explain-this-change/sample.html" target="_blank" rel="noopener">
+        <span>
+          <strong>Open the page it made</strong>
+          One self-contained file, the same one you get for your own changes. Press <kbd>Space</kbd>
+          to play, <kbd>Q</kbd> or <kbd>D</kbd> for Quick or Deep dive, <kbd>T</kbd> for text only,
+          <kbd>?</kbd> for every key.
+        </span>
+        <span class="go">Open the sample →</span>
+      </a>
+    </section>
+
+    <!-- WHAT IT DOES -->
+    <section id="what">
+      <div class="section-label">What it does</div>
+      <h2>A pair of senior engineers, talking your change through</h2>
+      <div class="notes">
+        <div class="card note">
+          <h3>Any size of change</h3>
+          <p>A pull request, a branch, your uncommitted work, one file, a range of lines or a single
+             hunk. Add a question (<em>“Is it safe to retry every request?”</em>) and it is answered
+             first.</p>
+        </div>
+        <div class="card note">
+          <h3>Quick or Deep dive</h3>
+          <p>Quick is about 30 seconds: the gist. Deep dive covers every part, then the proof and a
+             closing review focus. Switch between them while it plays.</p>
+        </div>
+        <div class="card note">
+          <h3>Pause and ask</h3>
+          <p>Ask a question mid-walkthrough. The answer becomes a new chapter, lit up on the lines it
+             is about.</p>
+        </div>
+        <div class="card note key">
+          <h3>Never a pass without proof</h3>
+          <p>It shows the tests the change touches (or doesn't), the pull request's checks and, if you
+             switch it on, your tests run before and after. Nothing says <em>“tests pass”</em> unless
+             something shows it.</p>
+        </div>
+        <div class="card note key">
+          <h3>Never an invented reason</h3>
+          <p>A “why” must come from a commit message, the pull request, an issue or the Claude Code
+             session that wrote it, quoted and labelled. Otherwise it says <em>“Intent not
+             stated.”</em></p>
+        </div>
+        <div class="card note">
+          <h3>Save to the pull request</h3>
+          <p>Off until you switch it on. One comment headed with what to check, plus a searchable
+             history. The comment never holds the code or Claude's reasoning.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE BUTTON -->
+    <section id="button">
+      <div class="section-label">For review apps</div>
+      <h2>One script tag, then a button wherever you want one</h2>
+      <p class="lead">Start the skill's helper on your computer, then drop the button into any review
+        app. It works the same from Claude Code (<em>“Explain this branch”</em>), the command line,
+        or JavaScript.</p>
+      <pre class="card code"><span class="c">&lt;!-- served by the helper on your own computer --&gt;</span>
+&lt;<span class="k">script</span> src=<span class="s">"http://127.0.0.1:4317/button.js"</span>&gt;&lt;/<span class="k">script</span>&gt;
+
+<span class="c">&lt;!-- the hunk around line 34, with a question box --&gt;</span>
+&lt;<span class="k">explain-change</span> file=<span class="s">"src/retry.js"</span> line=<span class="s">"34"</span> ask&gt;&lt;/<span class="k">explain-change</span>&gt;</pre>
+    </section>
+
+    <!-- WHERE YOUR CODE GOES -->
+    <section id="privacy">
+      <div class="section-label">Private code</div>
+      <h2>Where your code goes</h2>
+      <p class="lead">The guide in the download has the full table. The short version:</p>
+      <ul class="card need">
+        <li><span><strong>The change goes to your writer only:</strong> your own Claude Code sign-in (the
+          default), or the Anthropic API with your own key. If you already use Claude Code on this
+          code, nothing new leaves your computer.</span></li>
+        <li><span><strong>Claude sees only what it is handed.</strong> It writes from an empty folder,
+          with no tools, so it can't open other files or run anything.</span></li>
+        <li><span><strong>Nothing else is sent anywhere.</strong> No analytics, no calls home. The page
+          it makes loads nothing from the internet.</span></li>
+        <li class="off"><span><strong>Off until you switch them on:</strong> posting to the pull request,
+          running your tests (that runs the change's code), Google's voices (they hear the spoken
+          words, never the code), and reading Claude Code's session notes.</span></li>
+      </ul>
+    </section>
+
+    <!-- WHAT YOU NEED -->
+    <section id="need">
+      <div class="section-label">Before you start</div>
+      <h2>What you need</h2>
+      <ul class="card need">
+        <li><span><strong>Claude Code</strong>, signed in. Or an Anthropic API key instead.</span></li>
+        <li><span><strong>Node 20 or newer</strong> and <strong>git</strong>.</span></li>
+        <li class="optional"><span><strong>Optional: the GitHub command-line tool</strong>, signed in,
+          for pull requests by number, their checks, and saving.</span></li>
+        <li class="optional"><span><strong>Optional: a Google AI Studio key</strong> for more natural
+          voices, on your own account.</span></li>
+        <li><span><strong>Cost:</strong> it comes out of your Claude plan like any other Claude Code
+          request. On the practice project, Claude Code reported about $0.18 for one hunk with a
+          question, and about $0.28 for a whole pull request plus a follow-up (the same work priced
+          on the API). Asking the same thing again costs nothing.</span></li>
+      </ul>
+    </section>
+
+    <!-- GET STARTED -->
+    <section id="start">
+      <div class="section-label">Get started</div>
+      <h2>Four steps to your first explanation</h2>
+      <p class="lead">The download includes a full guide (README.md). This is the short version.</p>
+      <ol class="start">
+        <li class="card"><span><strong>Download the zip and unzip it.</strong> You'll get a folder
+          called explain-this-change.</span></li>
+        <li class="card"><span><strong>Open Claude Code in your project</strong> and say:
+          <span class="say">Copy the explain-this-change folder from my Downloads folder into this project's .claude/skills folder.</span></span></li>
+        <li class="card"><span><strong>Start Claude Code fresh</strong> so it notices the skill. To see
+          it first without sending anything anywhere, say:
+          <span class="say">Show me the explain-this-change practice page, offline.</span></span></li>
+        <li class="card"><span><strong>Ask for your first one.</strong> The first time, it installs
+          its helpers, makes a settings file and checks everything is ready (a minute or two).
+          <span class="say">Explain this branch.</span></span></li>
+      </ol>
+    </section>
+
+    <!-- GOOD TO KNOW -->
+    <section id="know">
+      <div class="section-label">Good to know</div>
+      <h2>Plain English, and the honest limits</h2>
+      <div class="notes">
+        <div class="card note">
+          <h3>A plain-English mode, off by default</h3>
+          <p>For people who don't read code: switch on product mode and the recap uses pictures of
+             your running app instead of code, with no code words in the narration. If your app has
+             a sign-in, give it a test account with tidy, made-up data: anything in it can appear in
+             a picture.</p>
+        </div>
+        <div class="card note">
+          <h3>It refuses rather than guesses</h3>
+          <p>An explanation that fails the check is sent back to Claude once with the problems. If it
+             fails again, it is refused, not shown. A built-in self-test proves each safeguard can
+             say no.</p>
+        </div>
+      </div>
+      <div class="card untested" style="margin-top:14px">
+        <strong>Not tested yet.</strong> Version 1 was built and tested on one Mac, on the made-up
+        practice project and a private practice pull request. Not yet tried:
+        <ul>
+          <li>Windows and Linux.</li>
+          <li>A review app served over https from the internet, calling the helper on your computer.</li>
+          <li>GitHub Enterprise.</li>
+          <li>Plain-English mode signing in to a real app (only the practice app so far).</li>
+          <li>The real format of Claude Code's session notes, beyond the practice files.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section id="feedback">
+      <div class="section-label">Version 2</div>
+      <h2>Tell me how it went</h2>
+      <div class="card feedback">
+        <p><strong>Your code is where it meets the real world</strong>, so I want to hear what it got
+           wrong, what it missed, and what got in the way.</p>
+        <p>After your first few explanations, ask Claude <em>“Help me fill in the explain-this-change
+           feedback form.”</em> It asks a few short questions and saves your answers as a file. Send
+           that file to
+           <a class="mail" href="mailto:taz@madtaz.com?subject=Explain%20This%20Change%20feedback">taz@madtaz.com</a>.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <p class="fine-print">
+    Free to use, under the MIT licence. Comes as is, with no promises.
+  </p>
+
+  <script>
+    // Chapter buttons: jump the film to each chapter, and mark the one playing.
+    (function () {
+      var film = document.getElementById('film');
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.chapters button'));
+      buttons.forEach(function (b) {
+        b.addEventListener('click', function () {
+          film.currentTime = parseFloat(b.dataset.t);
+          var p = film.play();
+          if (p && p.catch) p.catch(function () {});
+        });
+      });
+      film.addEventListener('timeupdate', function () {
+        var now = film.currentTime, current = null;
+        buttons.forEach(function (b) { if (now >= parseFloat(b.dataset.t) - 0.05) current = b; });
+        buttons.forEach(function (b) { b.setAttribute('aria-current', b === current ? 'true' : 'false'); });
+      });
+    })();
+  </script>
+
+</body>
+</html>
