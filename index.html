@@ -115,6 +115,20 @@
       font-size: 30px; font-weight: 700; color: #ffffff; letter-spacing: -.02em;
     }
 
+    /* Projects come in groups (Dolly Doc, then the free Claude Code skills):
+       a small heading with a hairline running out to the right, then that group's cards. */
+    .project-group + .project-group { margin-top: 56px; }
+    .group-head {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+    }
+    .group-title {
+      font-size: 17px; font-weight: 700; color: #ffffff; letter-spacing: -.01em;
+      white-space: nowrap;
+    }
+    .group-head::after {
+      content: ""; flex: 1; height: 1px; background: var(--border);
+    }
+
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -376,6 +390,9 @@
       .section { padding: 40px 16px 60px; }
       .section-title { font-size: 24px; }
       .projects-grid { grid-template-columns: 1fr; gap: 16px; }
+      .project-group + .project-group { margin-top: 40px; }
+      .group-head { margin-bottom: 14px; }
+      .group-title { font-size: 16px; }
       .project-info { padding: 14px 16px 16px; }
       .project-name { font-size: 14px; }
 
@@ -443,48 +460,51 @@
       <div class="section-label">Work</div>
       <h2 class="section-title">Projects</h2>
     </div>
-    <div class="projects-grid">
+    <div class="project-group" role="group" aria-labelledby="group-dolly-doc">
+      <div class="group-head"><h3 class="group-title" id="group-dolly-doc">Dolly Doc</h3></div>
+      <div class="projects-grid">
 
-      <a class="project-card" href="/dolly-doc-assets.html">
-        <div class="project-thumb">
-          <img src="/dolly-doc-assets-preview.png" alt="Dolly Doc Brand Assets">
-        </div>
-        <div class="project-info">
-          <div class="project-name">Brand Assets — Dolly Doc</div>
-          <div class="project-desc">Email signatures and business card variations — copy-paste ready, 300 DPI print files.</div>
-        </div>
-      </a>
+        <a class="project-card" href="https://dollydoc.com" target="_blank" rel="noopener">
+          <div class="project-thumb">
+            <img src="/dollydoc-screenshot.png?v=2" alt="Dolly Doc">
+          </div>
+          <div class="project-info">
+            <div class="project-name">Dolly Doc</div>
+            <div class="project-desc">QR-linked fleet tracking &amp; repair management for warehouse equipment.</div>
+          </div>
+        </a>
 
-      <a class="project-card project-card" href="https://dollydoc.com" target="_blank" rel="noopener">
-        <div class="project-thumb">
-          <img src="/dollydoc-screenshot.png?v=2" alt="Dolly Doc">
-        </div>
-        <div class="project-info">
-          <div class="project-name">Dolly Doc</div>
-          <div class="project-desc">QR-linked fleet tracking &amp; repair management for warehouse equipment.</div>
-        </div>
-      </a>
+        <!-- Brand Assets card taken off the home page 2026-11-22: out of date, back once it is
+             reworked. Its page (/dolly-doc-assets.html) and files are untouched. -->
 
-      <a class="project-card" href="/demo-video.html">
-        <div class="project-thumb">
-          <img src="/demo-video/card.jpg" alt="A frame from a demo video made with the skill: a plant-care app's plant list, with a pointer and a caption">
-        </div>
-        <div class="project-info">
-          <div class="project-name">Demo Video Skill</div>
-          <div class="project-desc">A free Claude Code skill: say “make a demo video of my app” and get a narrated, captioned video of your real screens.</div>
-        </div>
-      </a>
+      </div>
+    </div>
 
-      <a class="project-card" href="/explain-this-change.html">
-        <div class="project-thumb">
-          <img src="/explain-this-change/card.jpg" alt="A code change on screen with three changed lines lit up, and the narrator's line about them underneath">
-        </div>
-        <div class="project-info">
-          <div class="project-name">Explain This Change</div>
-          <div class="project-desc">A free Claude Code skill: an on-demand code review explainer. Press a button on any change and hear it talked through, the lines lit up as you go.</div>
-        </div>
-      </a>
+    <div class="project-group" role="group" aria-labelledby="group-skills">
+      <div class="group-head"><h3 class="group-title" id="group-skills">Free Claude Code skills</h3></div>
+      <div class="projects-grid">
 
+        <a class="project-card" href="/demo-video.html">
+          <div class="project-thumb">
+            <img src="/demo-video/card.jpg" alt="A frame from a demo video made with the skill: a plant-care app's plant list, with a pointer and a caption">
+          </div>
+          <div class="project-info">
+            <div class="project-name">Demo Video Skill</div>
+            <div class="project-desc">Say “make a demo video of my app” and get a narrated, captioned video of your real screens.</div>
+          </div>
+        </a>
+
+        <a class="project-card" href="/explain-this-change.html">
+          <div class="project-thumb">
+            <img src="/explain-this-change/card.jpg" alt="A code change on screen with three changed lines lit up, and the narrator's line about them underneath">
+          </div>
+          <div class="project-info">
+            <div class="project-name">Explain This Change</div>
+            <div class="project-desc">An on-demand code review explainer. Press a button on any change and hear it talked through, the lines lit up as you go.</div>
+          </div>
+        </a>
+
+      </div>
     </div>
   </section>
 

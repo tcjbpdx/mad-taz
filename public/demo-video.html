@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MadTaz — Demo Video Skill</title>
   <meta name="description" content="A free Claude Code skill: say “make a demo video of my app” and get a narrated, captioned video of your web app's real screens. You approve every word first.">
+  <meta name="author" content="Taz">
+  <link rel="canonical" href="https://madtaz.com/demo-video.html">
   <meta property="og:title" content="Demo Video Skill">
   <meta property="og:description" content="Say “make a demo video of my app” and get a narrated, captioned video of your real screens. You approve every word first.">
-  <meta property="og:image" content="https://madtaz.com/demo-video/card.jpg">
+  <meta property="og:image" content="https://madtaz.com/demo-video/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Demo Video Skill, a free Claude Code skill by Taz on madtaz.com">
   <meta property="og:url" content="https://madtaz.com/demo-video.html">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MadTaz">
   <meta name="twitter:card" content="summary_large_image">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -237,6 +243,33 @@
 
     a:focus-visible, video:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+    /* ── SHARE ──────────────────────────────── */
+    /* Same row as the articles: plain links for each network (no third-party
+       scripts or trackers). The phone share sheet and Copy link buttons start
+       hidden and are switched on by the script at the bottom, so nothing dead
+       shows without it. */
+    .share { border-top: 1px solid var(--border); padding-top: 28px; }
+    .share-title {
+      font-size: 12px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--soft); margin-bottom: 14px;
+    }
+    .share-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .share-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 40px; padding: 8px 18px;
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 999px;
+      font: inherit; font-size: 14px; font-weight: 600; line-height: 1.2;
+      text-decoration: none; cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .share-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .share-btn.primary:hover { background: #3a7ae8; border-color: #3a7ae8; color: #fff; }
+    .share-btn[hidden] { display: none; }
+    .share-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 999px; }
+    .share-status { min-height: 20px; margin-top: 10px; font-size: 13px; color: var(--soft); }
+
     /* ── RESPONSIVE ─────────────────────────── */
     @media (max-width: 760px) {
       .steps { grid-template-columns: 1fr; }
@@ -263,7 +296,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .btn, .subnav-btn { transition: none; }
+      .btn, .subnav-btn, .share-btn { transition: none; }
     }
   </style>
 </head>
@@ -441,11 +474,76 @@
       </div>
     </section>
 
+    <!-- SHARE -->
+    <section class="share" aria-labelledby="share-title">
+      <h2 class="share-title" id="share-title">Share this skill</h2>
+      <div class="share-row">
+        <button type="button" class="share-btn primary" id="share-native" hidden>Share…</button>
+        <button type="button" class="share-btn" id="share-copy" hidden>Copy link</button>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmadtaz.com%2Fdemo-video.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn (opens in a new tab)">LinkedIn</a>
+        <a class="share-btn" href="https://x.com/intent/tweet?text=Demo%20Video%20Skill&amp;url=https%3A%2F%2Fmadtaz.com%2Fdemo-video.html" target="_blank" rel="noopener" aria-label="Share on X (opens in a new tab)">X</a>
+        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmadtaz.com%2Fdemo-video.html" target="_blank" rel="noopener" aria-label="Share on Facebook (opens in a new tab)">Facebook</a>
+        <a class="share-btn" href="mailto:?subject=Demo%20Video%20Skill&amp;body=Say%20%E2%80%9Cmake%20a%20demo%20video%20of%20my%20app%E2%80%9D%20and%20get%20a%20narrated%2C%20captioned%20video%20of%20your%20real%20screens.%20You%20approve%20every%20word%20first.%0A%0Ahttps%3A%2F%2Fmadtaz.com%2Fdemo-video.html" aria-label="Share by email">Email</a>
+      </div>
+      <p class="share-status" id="share-status" role="status" aria-live="polite"></p>
+    </section>
+
   </main>
 
   <p class="fine-print">
     Free to use. Comes as is, with no promises. Use a test account.
   </p>
+
+  <script>
+    // Share row, the same as the articles'. The network links above work on their own; this
+    // only adds the phone's own share sheet (where the browser has one) and a Copy link button.
+    // It always shares the page's permanent address, never whatever is in the address bar
+    // (which could carry tracking bits or a #section).
+    (function () {
+      var url = 'https://madtaz.com/demo-video.html';
+      var title = 'Demo Video Skill';
+      var text = 'Say “make a demo video of my app” and get a narrated, captioned video of your real screens. You approve every word first.';
+      var status = document.getElementById('share-status');
+      var timer;
+      function say(msg) {
+        status.textContent = msg;
+        clearTimeout(timer);
+        timer = setTimeout(function () { status.textContent = ''; }, 4000);
+      }
+
+      var native = document.getElementById('share-native');
+      if (navigator.share) {
+        native.hidden = false;
+        native.addEventListener('click', function () {
+          // Closing the share sheet without picking anything rejects; that is not an error.
+          navigator.share({ title: title, text: text, url: url }).catch(function () {});
+        });
+      }
+
+      var copy = document.getElementById('share-copy');
+      copy.hidden = false;
+      copy.addEventListener('click', function () {
+        function oldWay() {
+          var box = document.createElement('textarea');
+          box.value = url;
+          box.setAttribute('readonly', '');
+          box.style.position = 'fixed';
+          box.style.opacity = '0';
+          document.body.appendChild(box);
+          box.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(box);
+          say(ok ? 'Link copied.' : 'Couldn’t copy it. Here’s the link: ' + url);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () { say('Link copied.'); }, oldWay);
+        } else {
+          oldWay();
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>
