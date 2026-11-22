@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
   <title>MadTaz — The Meeting Before the Code</title>
   <meta name="description" content="A truck driver’s case for treating AI as a colleague, not just a code machine.">
   <meta name="author" content="Taz">
@@ -33,37 +35,50 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* A light reading page: white paper, a serif for the long text and the
+       site's heavy sans for the title and headings. The link blue is darker
+       than the site's #4f8ef7, which is too faint to read as text on white.
+       It stays light even when a phone is set to dark mode: the article is
+       meant to read like print. */
     :root {
-      --bg:      #0a0c10;
-      --surface: #111418;
-      --border:  #1c2030;
-      --text:    #e2e4e9;
-      --muted:   #5a6070;
-      --soft:    #8a90a0;
-      --body:    #c9ccd5;
-      --accent:  #4f8ef7;
+      --bg:         #ffffff;
+      --panel:      #f5f8fd;
+      --panel-line: #dde6f5;
+      --line:       #e7e9ee;
+      --ink:        #15171c;
+      --body:       #2b2e35;
+      --soft:       #596070;
+      --muted:      #6a7181;
+      --accent:     #1f5fd6;
+      --brand:      #4f8ef7;
+      --serif:      Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
+      --sans:       -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color-scheme: light;
     }
 
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
       background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color: var(--ink);
+      font-family: var(--sans);
       line-height: 1.6;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
+    ::selection { background: #cfe0ff; color: var(--ink); }
     a { color: var(--accent); }
 
-    /* ── SUBNAV (same as the other pages) ───── */
+    /* ── SUBNAV (same links as the other pages, light here) ── */
     .subnav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       height: 44px;
       display: flex; align-items: center;
       padding: 0 48px;
       gap: 6px;
-      background: rgba(10, 12, 16, 0.85);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--line);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
@@ -78,162 +93,171 @@
       transition: color .15s, background .15s, border-color .15s;
     }
     .subnav-btn:hover {
-      color: var(--text);
-      background: var(--surface);
-      border-color: var(--border);
+      color: var(--ink);
+      background: #f3f4f7;
+      border-color: var(--line);
     }
     .subnav-btn.active {
       color: var(--accent);
-      background: rgba(79,142,247,.08);
-      border-color: rgba(79,142,247,.3);
+      background: rgba(31,95,214,.07);
+      border-color: rgba(31,95,214,.25);
     }
 
     /* ── HEADER ─────────────────────────────── */
     .page-header {
-      max-width: 800px; margin: 0 auto;
-      padding: 120px 48px 40px;
-      text-align: center;
-      position: relative;
+      max-width: 760px; margin: 0 auto;
+      padding: 116px 40px 0;
     }
-    .page-header::before {
-      content: '';
-      position: absolute; inset: 0; z-index: 0;
-      background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(79,142,247,.09) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .page-header > * { position: relative; }
     .page-label {
-      font-size: 11px; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+      font-size: 12px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
     }
     .page-label a { color: inherit; text-decoration: none; }
     .page-label a:hover { text-decoration: underline; }
     .page-title {
-      font-size: 46px; font-weight: 800; color: #ffffff;
-      line-height: 1.1; letter-spacing: -.025em; margin-bottom: 18px;
+      font-size: 48px; font-weight: 800; color: var(--ink);
+      line-height: 1.08; letter-spacing: -.028em; margin-bottom: 16px;
       text-wrap: balance;
     }
     .page-intro {
-      font-size: 19px; color: var(--soft); line-height: 1.6;
-      max-width: 560px; margin: 0 auto 22px;
+      font-size: 22px; color: var(--soft); line-height: 1.45;
+      margin-bottom: 28px;
       text-wrap: balance;
     }
     .byline {
-      display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 10px;
-      font-size: 13px; color: var(--muted);
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 44px;
     }
-    .byline strong { color: var(--text); font-weight: 600; }
-    .byline .dot { color: #2e3444; }
+    .byline-face {
+      width: 48px; height: 48px; flex: none;
+      border-radius: 50%;
+      object-fit: contain;
+      background: #fdf0e4;
+      padding: 4px;
+    }
+    .byline-text { display: flex; flex-direction: column; line-height: 1.4; }
+    .byline-name { font-size: 15px; color: var(--body); }
+    .byline-name strong { color: var(--ink); font-weight: 700; }
+    .byline-meta { font-size: 14px; color: var(--muted); }
+    .byline .dot { margin: 0 7px; color: #b8bdc7; }
 
     /* ── ARTICLE ────────────────────────────── */
     .article {
-      max-width: 700px; margin: 0 auto;
-      padding: 8px 40px 24px;
-      font-size: 18px; line-height: 1.75; color: var(--body);
+      max-width: 760px; margin: 0 auto;
+      padding: 0 40px 24px;
+      font-family: var(--serif);
+      font-size: 20px; line-height: 1.75; color: var(--body);
     }
-    .article p { margin-bottom: 1.25em; }
-    .article strong { color: #ffffff; font-weight: 650; }
+    .article p { margin-bottom: 1.3em; }
+    .article strong { color: var(--ink); font-weight: 700; }
+    .article a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    .article a:hover { text-decoration-thickness: 2px; }
 
     .article h2 {
-      font-size: 24px; font-weight: 700; color: #ffffff;
-      line-height: 1.3; letter-spacing: -.015em;
-      margin: 56px 0 18px;
-    }
-    .article h2::before {
-      content: ''; display: block;
-      width: 24px; height: 2px; background: var(--accent);
-      margin-bottom: 14px;
+      font-family: var(--sans);
+      font-size: 27px; font-weight: 750; color: var(--ink);
+      line-height: 1.25; letter-spacing: -.018em;
+      margin: 2.3em 0 .65em;
     }
 
-    .pull {
-      margin: 40px 0 8px;
-      padding: 4px 0 4px 22px;
-      border-left: 3px solid var(--accent);
-      font-size: 26px; line-height: 1.35; font-weight: 700;
-      color: #ffffff; letter-spacing: -.01em;
+    /* The one line worth remembering, set apart like a magazine pull quote */
+    .article .pull {
+      margin: 2em 0;
+      padding: 0 12px;
+      text-align: center;
+      font-size: 30px; line-height: 1.35; font-style: italic;
+      color: var(--ink);
+      text-wrap: balance;
     }
+    .article .pull::before,
+    .article .pull::after {
+      content: ''; display: block;
+      width: 44px; height: 3px; border-radius: 2px;
+      background: var(--brand);
+      margin: 0 auto 22px;
+    }
+    .article .pull::after { margin: 22px auto 0; }
 
     .steps {
       list-style: none; counter-reset: step;
-      display: flex; flex-direction: column; gap: 12px;
-      margin: 4px 0 1.25em;
+      display: flex; flex-direction: column; gap: 16px;
+      margin: 4px 0 0;
     }
     .steps li {
       counter-increment: step;
-      display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      padding: 16px 18px;
-      font-size: 17px; line-height: 1.65;
+      display: grid; grid-template-columns: 30px 1fr; gap: 16px; align-items: start;
+      font-size: 18.5px; line-height: 1.65;
     }
     .steps li::before {
       content: counter(step);
       display: inline-flex; align-items: center; justify-content: center;
-      width: 28px; height: 28px; border-radius: 50%;
-      background: rgba(79,142,247,.12); color: var(--accent);
-      font-size: 13px; font-weight: 700;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--accent); color: #ffffff;
+      font-family: var(--sans); font-size: 14px; font-weight: 700;
     }
 
     /* "Try it yourself" — the how-to steps, boxed off so the article itself can argue */
     .try {
-      margin: 52px 0 8px;
-      padding: 28px 30px 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      margin: 3em 0 1em;
+      padding: 30px 32px 30px;
+      background: var(--panel);
+      border: 1px solid var(--panel-line);
       border-radius: 14px;
     }
-    .article .try h2 { margin-top: 0; }
-    .try .steps { gap: 14px; margin-bottom: 0; }
-    .try .steps li { background: none; border: 0; border-radius: 0; padding: 0; }
+    .article .try h2 { margin-top: 0; font-size: 24px; }
 
-    .article a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
-
-    .closing {
+    .article .closing {
       margin-top: 2em;
-      font-size: 21px; line-height: 1.5; font-weight: 600; color: #ffffff;
+      font-size: 24px; line-height: 1.45; font-weight: 700; color: var(--ink);
     }
-    .signoff { font-size: 18px; font-weight: 700; color: var(--accent); }
+    .article .signoff {
+      font-family: var(--sans);
+      font-size: 18px; font-weight: 700; color: var(--accent);
+    }
 
     .article-end {
-      max-width: 700px; margin: 0 auto;
-      padding: 28px 40px 88px;
+      max-width: 760px; margin: 0 auto;
+      padding: 28px 40px 96px;
     }
     .article-end-inner {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--line);
       padding-top: 24px;
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-      font-size: 14px; font-weight: 600;
+      font-size: 15px; font-weight: 600;
     }
     .article-end a { text-decoration: none; }
     .article-end a:hover { text-decoration: underline; }
-    .article-end .home { color: var(--soft); }
+    .article-end .home { color: var(--muted); }
 
     /* ── SHARE ──────────────────────────────── */
     /* Plain links for each network (no third-party scripts or trackers). The
        phone share sheet and Copy link buttons start hidden and are switched
        on by the script at the bottom, so nothing dead shows without it. */
     .share {
-      max-width: 700px; margin: 0 auto;
-      padding: 24px 40px 0;
+      max-width: 760px; margin: 0 auto;
+      padding: 28px 40px 0;
     }
-    .share-inner { border-top: 1px solid var(--border); padding-top: 26px; }
+    .share-inner { border-top: 1px solid var(--line); padding-top: 28px; }
     .share-title {
-      font-size: 11px; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+      font-size: 12px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
     }
     .share-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .share-btn {
       display: inline-flex; align-items: center; justify-content: center;
-      min-height: 40px; padding: 8px 16px;
-      background: var(--surface); color: var(--text);
-      border: 1px solid var(--border); border-radius: 999px;
+      min-height: 40px; padding: 8px 18px;
+      background: #ffffff; color: var(--body);
+      border: 1px solid #d6dae2; border-radius: 999px;
       font: inherit; font-size: 14px; font-weight: 600; line-height: 1.2;
       text-decoration: none; cursor: pointer;
-      transition: border-color .15s, color .15s;
+      transition: border-color .15s, color .15s, background .15s;
     }
-    .share-btn:hover { border-color: rgba(79,142,247,.5); color: #ffffff; }
-    .share-btn.primary {
-      background: rgba(79,142,247,.12); border-color: rgba(79,142,247,.35); color: var(--accent);
-    }
+    .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .share-btn.primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+    .share-btn.primary:hover { background: #1a51b8; border-color: #1a51b8; color: #ffffff; }
     .share-btn[hidden] { display: none; }
     .share-status { min-height: 20px; margin-top: 10px; font-size: 13px; color: var(--soft); }
     .share + .article-end { padding-top: 20px; }
@@ -245,16 +269,18 @@
     @media (max-width: 720px) {
       .subnav { padding: 0 16px; gap: 4px; }
       .subnav-btn { padding: 5px 12px; font-size: 12px; }
-      .page-header { padding: 88px 16px 28px; }
-      .page-title { font-size: 32px; }
-      .page-intro { font-size: 16px; }
-      .article { padding: 4px 16px 16px; font-size: 17px; line-height: 1.7; }
-      .article h2 { font-size: 21px; margin-top: 44px; }
-      .pull { font-size: 21px; padding-left: 16px; margin-top: 32px; }
-      .steps li { padding: 14px; gap: 12px; font-size: 16px; }
-      .try { padding: 22px 18px 18px; margin-top: 44px; }
-      .try .steps li { padding: 0; }
-      .closing { font-size: 19px; }
+      .page-header { padding: 84px 16px 0; }
+      .page-title { font-size: 34px; }
+      .page-intro { font-size: 18px; margin-bottom: 22px; }
+      .byline { padding: 14px 0; margin-bottom: 32px; }
+      .article { padding: 0 16px 16px; font-size: 18.5px; line-height: 1.7; }
+      .article h2 { font-size: 23px; }
+      .article .pull { font-size: 24px; padding: 0 4px; }
+      .steps li { grid-template-columns: 28px 1fr; gap: 12px; font-size: 17px; }
+      .steps li::before { width: 28px; height: 28px; font-size: 13px; }
+      .try { padding: 22px 18px 22px; }
+      .article .try h2 { font-size: 22px; }
+      .article .closing { font-size: 21px; }
       .share { padding: 20px 16px 0; }
       .article-end { padding: 24px 16px 64px; }
       .share + .article-end { padding-top: 16px; }
@@ -266,7 +292,7 @@
       html { scroll-behavior: auto; }
       .subnav-btn, .share-btn { transition: none; }
     }
-  </style>
+</style>
 </head>
 <body>
 
@@ -282,11 +308,11 @@
     <h1 class="page-title">The Meeting Before the Code</h1>
     <p class="page-intro">A truck driver’s case for treating AI as a colleague, not just a code machine</p>
     <div class="byline">
-      <span>By <strong>Taz</strong></span>
-      <span class="dot" aria-hidden="true">·</span>
-      <time datetime="2026-11-22">November 2026</time>
-      <span class="dot" aria-hidden="true">·</span>
-      <span>8 min read</span>
+      <img class="byline-face" src="taz-byline.png" alt="" width="48" height="48">
+      <div class="byline-text">
+        <span class="byline-name">By <strong>Taz</strong></span>
+        <span class="byline-meta"><time datetime="2026-11-22">November 2026</time><span class="dot" aria-hidden="true">·</span>8 min read</span>
+      </div>
     </div>
   </header>
 
