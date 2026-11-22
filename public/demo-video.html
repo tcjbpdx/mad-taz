@@ -258,6 +258,9 @@
       .start li { padding: 14px; grid-template-columns: 30px 1fr; gap: 10px; }
       .fine-print { padding: 0 16px 48px; }
     }
+    @media (max-width: 380px) {
+      .subnav-btn { padding: 5px 9px; }   /* keeps all four top-bar buttons on the narrowest phones */
+    }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .btn, .subnav-btn { transition: none; }
@@ -270,6 +273,7 @@
     <a class="subnav-btn" href="/#bio">Bio</a>
     <a class="subnav-btn active" href="/#projects">Projects</a>
     <a class="subnav-btn" href="/accreditation.html">Accreditation</a>
+    <a class="subnav-btn" href="/articles.html">Articles</a>
   </div>
 
   <header class="page-header">

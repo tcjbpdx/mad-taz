@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MadTaz — The Meeting Before the Code</title>
+  <meta name="description" content="A truck driver’s case for treating AI as a colleague, not just a code machine.">
+  <meta name="author" content="Taz">
+  <link rel="canonical" href="https://madtaz.com/articles/the-meeting-before-the-code.html">
+  <meta property="og:title" content="The Meeting Before the Code">
+  <meta property="og:description" content="A truck driver’s case for treating AI as a colleague, not just a code machine.">
+  <meta property="og:image" content="https://madtaz.com/articles/the-meeting-before-the-code.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Meeting Before the Code, an article by Taz on madtaz.com">
+  <meta property="og:url" content="https://madtaz.com/articles/the-meeting-before-the-code.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="MadTaz">
+  <meta property="article:published_time" content="2026-11-22">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The Meeting Before the Code",
+    "description": "A truck driver’s case for treating AI as a colleague, not just a code machine.",
+    "image": "https://madtaz.com/articles/the-meeting-before-the-code.jpg",
+    "datePublished": "2026-11-22",
+    "author": { "@type": "Person", "name": "Taz", "url": "https://madtaz.com/" },
+    "mainEntityOfPage": "https://madtaz.com/articles/the-meeting-before-the-code.html"
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0c10;
+      --surface: #111418;
+      --border:  #1c2030;
+      --text:    #e2e4e9;
+      --muted:   #5a6070;
+      --soft:    #8a90a0;
+      --body:    #c9ccd5;
+      --accent:  #4f8ef7;
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); }
+
+    /* ── SUBNAV (same as the other pages) ───── */
+    .subnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 44px;
+      display: flex; align-items: center;
+      padding: 0 48px;
+      gap: 6px;
+      background: rgba(10, 12, 16, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .subnav-btn {
+      display: inline-flex; align-items: center;
+      padding: 5px 16px;
+      border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .subnav-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+    .subnav-btn.active {
+      color: var(--accent);
+      background: rgba(79,142,247,.08);
+      border-color: rgba(79,142,247,.3);
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .page-header {
+      max-width: 800px; margin: 0 auto;
+      padding: 120px 48px 40px;
+      text-align: center;
+      position: relative;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(79,142,247,.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header > * { position: relative; }
+    .page-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .page-label a { color: inherit; text-decoration: none; }
+    .page-label a:hover { text-decoration: underline; }
+    .page-title {
+      font-size: 46px; font-weight: 800; color: #ffffff;
+      line-height: 1.1; letter-spacing: -.025em; margin-bottom: 18px;
+      text-wrap: balance;
+    }
+    .page-intro {
+      font-size: 19px; color: var(--soft); line-height: 1.6;
+      max-width: 560px; margin: 0 auto 22px;
+      text-wrap: balance;
+    }
+    .byline {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 10px;
+      font-size: 13px; color: var(--muted);
+    }
+    .byline strong { color: var(--text); font-weight: 600; }
+    .byline .dot { color: #2e3444; }
+
+    /* ── ARTICLE ────────────────────────────── */
+    .article {
+      max-width: 700px; margin: 0 auto;
+      padding: 8px 40px 24px;
+      font-size: 18px; line-height: 1.75; color: var(--body);
+    }
+    .article p { margin-bottom: 1.25em; }
+    .article strong { color: #ffffff; font-weight: 650; }
+
+    .article h2 {
+      font-size: 24px; font-weight: 700; color: #ffffff;
+      line-height: 1.3; letter-spacing: -.015em;
+      margin: 56px 0 18px;
+    }
+    .article h2::before {
+      content: ''; display: block;
+      width: 24px; height: 2px; background: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .pull {
+      margin: 40px 0 8px;
+      padding: 4px 0 4px 22px;
+      border-left: 3px solid var(--accent);
+      font-size: 26px; line-height: 1.35; font-weight: 700;
+      color: #ffffff; letter-spacing: -.01em;
+    }
+
+    .steps {
+      list-style: none; counter-reset: step;
+      display: flex; flex-direction: column; gap: 12px;
+      margin: 4px 0 1.25em;
+    }
+    .steps li {
+      counter-increment: step;
+      display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 17px; line-height: 1.65;
+    }
+    .steps li::before {
+      content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(79,142,247,.12); color: var(--accent);
+      font-size: 13px; font-weight: 700;
+    }
+
+    .limits { list-style: none; margin: 4px 0 1.25em; }
+    .limits li { position: relative; padding-left: 26px; margin-bottom: .85em; }
+    .limits li::before {
+      content: ''; position: absolute; left: 4px; top: .72em;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    }
+
+    .closing {
+      margin-top: 2em;
+      font-size: 21px; line-height: 1.5; font-weight: 600; color: #ffffff;
+    }
+    .signoff { font-size: 18px; font-weight: 700; color: var(--accent); }
+
+    .article-end {
+      max-width: 700px; margin: 0 auto;
+      padding: 28px 40px 88px;
+    }
+    .article-end-inner {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      font-size: 14px; font-weight: 600;
+    }
+    .article-end a { text-decoration: none; }
+    .article-end a:hover { text-decoration: underline; }
+    .article-end .home { color: var(--soft); }
+
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 720px) {
+      .subnav { padding: 0 16px; gap: 4px; }
+      .subnav-btn { padding: 5px 12px; font-size: 12px; }
+      .page-header { padding: 88px 16px 28px; }
+      .page-title { font-size: 32px; }
+      .page-intro { font-size: 16px; }
+      .article { padding: 4px 16px 16px; font-size: 17px; line-height: 1.7; }
+      .article h2 { font-size: 21px; margin-top: 44px; }
+      .pull { font-size: 21px; padding-left: 16px; margin-top: 32px; }
+      .steps li { padding: 14px; gap: 12px; font-size: 16px; }
+      .closing { font-size: 19px; }
+      .article-end { padding: 24px 16px 64px; }
+    }
+    @media (max-width: 380px) {
+      .subnav-btn { padding: 5px 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .subnav-btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="subnav" aria-label="Site">
+    <a class="subnav-btn" href="/#bio">Bio</a>
+    <a class="subnav-btn" href="/#projects">Projects</a>
+    <a class="subnav-btn" href="/accreditation.html">Accreditation</a>
+    <a class="subnav-btn active" href="/articles.html" aria-current="page">Articles</a>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-label"><a href="/articles.html">Article</a></div>
+    <h1 class="page-title">The Meeting Before the Code</h1>
+    <p class="page-intro">A truck driver’s case for treating AI as a colleague, not just a code machine</p>
+    <div class="byline">
+      <span>By <strong>Taz</strong></span>
+      <span class="dot" aria-hidden="true">·</span>
+      <time datetime="2026-11-22">November 2026</time>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>4 min read</span>
+    </div>
+  </header>
+
+  <main>
+    <article class="article">
+
+      <p>I drive a truck four days a week. On my days off, I’m building a software company, Dolly Doc. I’m not a developer and I’ve never studied programming. I’m what people now call a vibe coder: I know the problem and the people I’m building for, and I use AI to do the coding I can’t.</p>
+
+      <p>Most people picture AI coding like this: open the tool, type what you want, watch it build. That’s how I started too. It works, but it’s a bit lonely. You’re giving orders to a machine.</p>
+
+      <p>Over time I’ve settled into a different rhythm, and it’s changed what building feels like.</p>
+
+      <p>Before any code gets written, I have a meeting. The other person at the table is Claude, in the ordinary chat app, usually by voice. No code editor, no terminal. Just a conversation, like two people at a whiteboard. It knows my project documents, so it has the context a real colleague would. Only once we both understand what we’re building does it write up a clear brief. Later I sit down at my computer and hand that brief to the coding tool.</p>
+
+      <p class="pull">Thinking with a colleague. Building with a builder.</p>
+
+      <h2>What these meetings actually look like</h2>
+
+      <p>It isn’t one magic session. It’s a habit, and the same things keep happening.</p>
+
+      <p><strong>My first idea is usually too clever.</strong> More than once I’ve walked in with an elaborate plan, like custom packaging with fancy fold-up inserts, and walked out with something far simpler that does the same job.</p>
+
+      <p><strong>Something won’t work, and I find out early.</strong> Plans that looked great in my head didn’t fit reality. Finding that out in a conversation costs nothing. Finding it out after the build costs days.</p>
+
+      <p><strong>The plan gets more honest.</strong> A pricing idea that sounded generous turned out to be a bad deal for everyone once someone asked the obvious questions. The version we landed on was fairer and stronger.</p>
+
+      <p><strong>Sometimes the answer is to stop.</strong> I once built a feature that kept getting bigger and worse. What fixed it wasn’t more code. It was a conversation that ended with going back to the simple method that had worked in the first place.</p>
+
+      <p><strong>Ideas get a backbone.</strong> A loose marketing idea came out of the meeting with a way to actually measure whether it worked.</p>
+
+      <p><strong>Decisions stay decided.</strong> When we settle something important, it gets written down, so the next late-night idea doesn’t quietly undo it.</p>
+
+      <h2>Why a conversation beats a command</h2>
+
+      <p>The difference isn’t technical, it’s human. A command needs you to know exactly what you want before you start. Real ideas don’t work that way. They show up half-formed in the truck, they wobble, and they get better when someone asks the question you skipped. A conversation can take half-formed. A command can’t.</p>
+
+      <p>You think better out loud, too. Half-sentences, tangents and “actually, no” are how ideas grow. You get pushback, and a collaborator who tells you your plan won’t work is worth more than one who says yes. And you bring what you know. I don’t know code, but I know my industry and the people who’d use my product, which is exactly what the meeting needs. By the time the coding tool sees the brief, the idea has been questioned, trimmed into small steps and written down plainly.</p>
+
+      <h2>How to try it</h2>
+
+      <ol class="steps">
+        <li><span>Open a chat, not a code editor. Voice is even better.</span></li>
+        <li><span>Explain the idea the way you’d explain it to a colleague over coffee. Don’t tidy it up first.</span></li>
+        <li><span>Ask it to challenge you: “What’s wrong with this? What would you do differently?”</span></li>
+        <li><span>When you’ve agreed on a plan, ask it to write a detailed brief for your coding tool. Tell the builder to look at what already exists and explain its plan before it starts.</span></li>
+        <li><span>Read that plan before you say go.</span></li>
+      </ol>
+
+      <h2>The honest limits</h2>
+
+      <ul class="limits">
+        <li>The chat side usually can’t see your actual code, so its brief can assume things that aren’t true. That’s why step 4 matters.</li>
+        <li>Ideas evolve, so briefs pile up. Keep them organised and bin the old versions.</li>
+        <li>This isn’t a secret. Plenty of developers plan with AI, and coding tools have planning modes. What’s different is the posture: treating the AI as someone to think with, not just something to instruct.</li>
+        <li>It doesn’t replace the real world. You still have to test things and talk to real customers.</li>
+      </ul>
+
+      <h2>Where this is heading</h2>
+
+      <p>If one person can have a design meeting with an AI, why not a whole team? Picture a real meeting where the AI listens, keeps track of decisions, raises the question nobody asked, and writes up the plan at the end.</p>
+
+      <p>That isn’t seamless yet. Following a room full of voices and knowing when to speak up is still hard. But the habit is worth building now. Give AI a seat at the table, not just a spot at the keyboard.</p>
+
+      <p>I’m a truck driver building a software company in my spare time. I couldn’t do it by giving orders to a machine. I can do it by having a good meeting first.</p>
+
+      <p class="closing">Next time you have an idea, don’t start with a command. Start a conversation.</p>
+
+      <p class="signoff">— Taz</p>
+
+    </article>
+  </main>
+
+  <nav class="article-end" aria-label="More">
+    <div class="article-end-inner">
+      <a href="/articles.html">← All articles</a>
+      <a class="home" href="/">madtaz.com</a>
+    </div>
+  </nav>
+
+</body>
+</html>
