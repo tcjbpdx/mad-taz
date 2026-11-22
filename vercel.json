@@ -1,27 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "installCommand": "npm install",
-  "redirects": [
-    {
-      "source": "/explain-this-change.html",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/explain-this-change",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/explain-this-change/:path*",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/explain-this-change-skill.zip",
-      "destination": "/",
-      "permanent": false
-    }
-  ]
+  "installCommand": "npm install"
 }
