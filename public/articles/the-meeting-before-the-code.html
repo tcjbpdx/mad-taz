@@ -173,12 +173,19 @@
       font-size: 13px; font-weight: 700;
     }
 
-    .limits { list-style: none; margin: 4px 0 1.25em; }
-    .limits li { position: relative; padding-left: 26px; margin-bottom: .85em; }
-    .limits li::before {
-      content: ''; position: absolute; left: 4px; top: .72em;
-      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    /* "Try it yourself" — the how-to steps, boxed off so the article itself can argue */
+    .try {
+      margin: 52px 0 8px;
+      padding: 28px 30px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
     }
+    .article .try h2 { margin-top: 0; }
+    .try .steps { gap: 14px; margin-bottom: 0; }
+    .try .steps li { background: none; border: 0; border-radius: 0; padding: 0; }
+
+    .article a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
     .closing {
       margin-top: 2em;
@@ -213,6 +220,8 @@
       .article h2 { font-size: 21px; margin-top: 44px; }
       .pull { font-size: 21px; padding-left: 16px; margin-top: 32px; }
       .steps li { padding: 14px; gap: 12px; font-size: 16px; }
+      .try { padding: 22px 18px 18px; margin-top: 44px; }
+      .try .steps li { padding: 0; }
       .closing { font-size: 19px; }
       .article-end { padding: 24px 16px 64px; }
     }
@@ -243,71 +252,83 @@
       <span class="dot" aria-hidden="true">·</span>
       <time datetime="2026-11-22">November 2026</time>
       <span class="dot" aria-hidden="true">·</span>
-      <span>4 min read</span>
+      <span>7 min read</span>
     </div>
   </header>
 
   <main>
     <article class="article">
 
-      <p>I drive a truck four days a week. On my days off, I’m building a software company, Dolly Doc. I’m not a developer and I’ve never studied programming. I’m what people now call a vibe coder: I know the problem and the people I’m building for, and I use AI to do the coding I can’t.</p>
+      <p>I’ve been a truck driver for sixteen years. I’ve driven coast to coast, checked off every one of the lower 48, and watched the seasons change from one state line to the next. On my days off, I’m building a software company. My qualifications are <a href="/accreditation.html">framed on my website</a>, both of them: a Certificate of Non-Achievement and a Doctor of Vibe Coding. No university was harmed in the making of either.</p>
 
-      <p>Most people picture AI coding like this: open the tool, type what you want, watch it build. That’s how I started too. It works, but it’s a bit lonely. You’re giving orders to a machine.</p>
+      <p>I’ve never studied programming. Most of what I build solves problems I created myself; <a href="/">my homepage</a> has the full confession. Dolly Doc is the first thing I’ve built to solve somebody else’s problem. It keeps track of the carts, dollies and hand trucks that warehouses run on, and gets the broken ones fixed.</p>
 
-      <p>Over time I’ve settled into a different rhythm, and it’s changed what building feels like.</p>
+      <p>I’m what people now call a vibe coder: I know the problem and the people I’m building for, and I use AI to do the coding I can’t.</p>
 
-      <p>Before any code gets written, I have a meeting. The other person at the table is Claude, in the ordinary chat app, usually by voice. No code editor, no terminal. Just a conversation, like two people at a whiteboard. It knows my project documents, so it has the context a real colleague would. Only once we both understand what we’re building does it write up a clear brief. Later I sit down at my computer and hand that brief to the coding tool.</p>
+      <p>Most people use AI like a vending machine: punch in a request, grab whatever drops out, walk away. That’s how I started too. It works, but it only goes one way. You press the buttons, it drops the snack, and nobody stops to ask whether you wanted that snack in the first place. That question is the best part, and the vending machine skips it. So here’s my case, from someone with no business making it: before you give AI an order, take it to a meeting.</p>
+
+      <h2>The meeting</h2>
+
+      <p>Before any code gets written, I have a meeting. The other person at the table is Claude, in the ordinary chat app, usually by voice. No code editor, no terminal. Just a conversation, like two people at a whiteboard. It knows my project documents, so it has the context a real colleague would. As colleagues go, it’s hard to fault. It has never once suggested a meeting that could have been an email, mostly because it <em>is</em> the meeting.</p>
+
+      <p>My day starts around one in the morning, so these meetings usually happen before most people’s alarms go off. My colleague has never asked to reschedule.</p>
+
+      <p>Only once we both understand what we’re building does it write up a clear brief. Later I sit down at my computer and hand that brief to the coding tool.</p>
 
       <p class="pull">Thinking with a colleague. Building with a builder.</p>
 
-      <h2>What these meetings actually look like</h2>
+      <h2>What actually happens in there</h2>
 
       <p>It isn’t one magic session. It’s a habit, and the same things keep happening.</p>
 
-      <p><strong>My first idea is usually too clever.</strong> More than once I’ve walked in with an elaborate plan, like custom packaging with fancy fold-up inserts, and walked out with something far simpler that does the same job.</p>
+      <p><strong>My first idea is usually too clever.</strong> I once walked in with a plan for custom packaging: fancy fold-up inserts, the works. I was proud of it. By the end I’d traded the origami for something far simpler that did the same job.</p>
 
-      <p><strong>Something won’t work, and I find out early.</strong> Plans that looked great in my head didn’t fit reality. Finding that out in a conversation costs nothing. Finding it out after the build costs days.</p>
+      <p><strong>The plan gets more honest.</strong> I had a pricing idea that sounded generous, and I was pleased with myself. Then the obvious questions got asked out loud, and it turned out to be a bad deal for everyone. The version we landed on was fairer and stronger. (No prices here. You’ll have to trust me, which, given my credentials, is a big ask.)</p>
 
-      <p><strong>The plan gets more honest.</strong> A pricing idea that sounded generous turned out to be a bad deal for everyone once someone asked the obvious questions. The version we landed on was fairer and stronger.</p>
+      <p><strong>Sometimes the answer is to stop.</strong> I once built a feature that kept getting bigger and worse. Every fix needed another fix. When your builder will happily write code all night, it’s tempting to keep going. Take it from someone officially commended for “once demanding fifty agents for a single task.” What fixed it wasn’t more code. It was a conversation that ended with going back to the simple method that had worked in the first place.</p>
 
-      <p><strong>Sometimes the answer is to stop.</strong> I once built a feature that kept getting bigger and worse. What fixed it wasn’t more code. It was a conversation that ended with going back to the simple method that had worked in the first place.</p>
-
-      <p><strong>Ideas get a backbone.</strong> A loose marketing idea came out of the meeting with a way to actually measure whether it worked.</p>
-
-      <p><strong>Decisions stay decided.</strong> When we settle something important, it gets written down, so the next late-night idea doesn’t quietly undo it.</p>
+      <p>The smaller wins keep coming. Plans that looked great in my head meet reality in the conversation, where finding out costs nothing, instead of after the build, where it costs days. A loose marketing idea comes out with a way to actually measure whether it worked. And when we settle something important, it gets written down, so the next late-night idea doesn’t quietly undo it.</p>
 
       <h2>Why a conversation beats a command</h2>
 
-      <p>The difference isn’t technical, it’s human. A command needs you to know exactly what you want before you start. Real ideas don’t work that way. They show up half-formed in the truck, they wobble, and they get better when someone asks the question you skipped. A conversation can take half-formed. A command can’t.</p>
+      <p>The difference isn’t technical, it’s human. A command needs you to know exactly what you want before you start. Real ideas don’t work that way. They show up half-formed in the truck, they wobble, and they get better when someone asks the question you skipped. A conversation can take half-formed. A command can’t. Try feeding half an idea into a vending machine. It just keeps your dollar.</p>
 
-      <p>You think better out loud, too. Half-sentences, tangents and “actually, no” are how ideas grow. You get pushback, and a collaborator who tells you your plan won’t work is worth more than one who says yes. And you bring what you know. I don’t know code, but I know my industry and the people who’d use my product, which is exactly what the meeting needs. By the time the coding tool sees the brief, the idea has been questioned, trimmed into small steps and written down plainly.</p>
+      <p>You think better out loud, too. Half-sentences, tangents and “actually, no” are how ideas grow. You get pushback, and a collaborator who tells you your plan won’t work is worth more than one who says yes. By the time the coding tool sees the brief, the idea has been questioned, trimmed into small steps and written down plainly.</p>
 
-      <h2>How to try it</h2>
+      <h2>The truck driver’s unfair advantage</h2>
 
-      <ol class="steps">
-        <li><span>Open a chat, not a code editor. Voice is even better.</span></li>
-        <li><span>Explain the idea the way you’d explain it to a colleague over coffee. Don’t tidy it up first.</span></li>
-        <li><span>Ask it to challenge you: “What’s wrong with this? What would you do differently?”</span></li>
-        <li><span>When you’ve agreed on a plan, ask it to write a detailed brief for your coding tool. Tell the builder to look at what already exists and explain its plan before it starts.</span></li>
-        <li><span>Read that plan before you say go.</span></li>
-      </ol>
+      <p>Here’s the part I believe most. For most of software’s history, if you couldn’t write code, you couldn’t build software. That wall is coming down. What’s left is the part that was always hard: knowing what to build, who it’s for, and why the obvious version won’t survive a real day at work.</p>
 
-      <h2>The honest limits</h2>
+      <p>That part doesn’t come from a classroom. It comes from being there, and sixteen years across 48 states is a lot of being there. I don’t know code, but I know my industry and the people who’d use my product, and that is exactly what the meeting needs. Around a table, it’s the most useful thing anyone brings. Typed into a command box, it never comes up at all.</p>
 
-      <ul class="limits">
-        <li>The chat side usually can’t see your actual code, so its brief can assume things that aren’t true. That’s why step 4 matters.</li>
-        <li>Ideas evolve, so briefs pile up. Keep them organised and bin the old versions.</li>
-        <li>This isn’t a secret. Plenty of developers plan with AI, and coding tools have planning modes. What’s different is the posture: treating the AI as someone to think with, not just something to instruct.</li>
-        <li>It doesn’t replace the real world. You still have to test things and talk to real customers.</li>
-      </ul>
+      <p>So here’s my opinion, for whatever a Doctor of Vibe Coding’s opinion is worth: some of the best ideas for the next wave of software won’t come from tech. They’ll come from people who drive trucks, run kitchens, fix roofs and stock shelves. They already know the problem. The only new skill they need is how to run a good meeting.</p>
+
+      <h2>Yes, but…</h2>
+
+      <p><strong>“Isn’t it just a chatbot?”</strong> Yes. And a whiteboard is just a wall you can write on. The value was never in the wall. It isn’t a secret, either: plenty of developers plan with AI, and coding tools have planning modes. What’s different is the posture: treating the AI as someone to think with, not just something to instruct.</p>
+
+      <p><strong>“Isn’t vibe coding reckless?”</strong> It can be, if the vibe is “type a wish and ship whatever comes back.” The meeting is the opposite of that. Its honest limit is that the chat side usually can’t see your actual code, so its brief can assume things that aren’t true. That’s why the builder has to look at what already exists and explain its plan before it starts, and why I read that plan before I say go. None of it replaces the real world, either. You still have to test things and talk to real customers. My Certificate of Non-Achievement is a joke. Shipping something broken to a real customer wouldn’t be.</p>
+
+      <p><strong>“Doesn’t it get messy?”</strong> Ideas evolve, so briefs pile up. Keep them organised and bin the old versions. Ask me how I know.</p>
+
+      <aside class="try" aria-labelledby="try-title">
+        <h2 id="try-title">Try it yourself</h2>
+        <ol class="steps">
+          <li><span>Open a chat, not a code editor. Voice is even better.</span></li>
+          <li><span>Explain the idea the way you’d explain it to a colleague over coffee. Don’t tidy it up first.</span></li>
+          <li><span>Ask it to challenge you: “What’s wrong with this? What would you do differently?”</span></li>
+          <li><span>When you’ve agreed on a plan, ask it to write a detailed brief for your coding tool. Tell the builder to look at what already exists and explain its plan before it starts.</span></li>
+          <li><span>Read that plan before you say go.</span></li>
+        </ol>
+      </aside>
 
       <h2>Where this is heading</h2>
 
-      <p>If one person can have a design meeting with an AI, why not a whole team? Picture a real meeting where the AI listens, keeps track of decisions, raises the question nobody asked, and writes up the plan at the end.</p>
+      <p>If one person can have a design meeting with an AI, why not a whole team? Picture a real meeting where the AI listens, keeps track of decisions, raises the question nobody asked, and writes up the plan at the end. Finally: someone who reads the minutes.</p>
 
-      <p>That isn’t seamless yet. Following a room full of voices and knowing when to speak up is still hard. But the habit is worth building now. Give AI a seat at the table, not just a spot at the keyboard.</p>
+      <p>That isn’t seamless yet. Following a room full of voices and knowing when to speak up is still hard. Plenty of humans haven’t cracked it either. But the habit is worth building now. Give AI a seat at the table, not just a spot at the keyboard.</p>
 
-      <p>I’m a truck driver building a software company in my spare time. I couldn’t do it by giving orders to a machine. I can do it by having a good meeting first.</p>
+      <p>I’m a truck driver building a software company in my spare time, with two framed certificates and no business doing any of this. I couldn’t do it by feeding requests into a vending machine. I can do it by having a good meeting first.</p>
 
       <p class="closing">Next time you have an idea, don’t start with a command. Start a conversation.</p>
 
